@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Minimal global polish to match storefront feel */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-neutral-50 text-neutral-900 leading-snug sm:leading-normal;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Inner photo motion when RevealOnScroll variant="image" becomes visible */
+.reveal-photo-active img {
+  animation: reveal-photo-inner 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes reveal-photo-inner {
+  from {
+    opacity: 0.92;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-photo-active img {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Utility: hide scrollbars (used by carousels) */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+@layer components {
+  /* Homepage / shared layout rhythm */
+  .home-container {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .home-section-y {
+    @apply py-10 sm:py-14 md:py-20 lg:py-24;
+  }
+
+  /* Shared page containers */
+  .page-shell {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12;
+  }
+
+  .page-narrow {
+    @apply max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-10 md:py-12;
+  }
+
+  .page-title {
+    @apply text-2xl font-semibold tracking-tight text-neutral-900 md:text-3xl;
+  }
+
+  .page-kicker {
+    @apply text-xs font-medium uppercase tracking-[0.16em] text-neutral-500;
+  }
+
+  .card-surface {
+    @apply rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm;
+  }
+
+  .field-input {
+    @apply w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm outline-none transition focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2;
+  }
+
+  .field-select {
+    @apply rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm outline-none transition focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2;
+  }
+
+  /* Primary CTA: 44px+ min height, visible focus for keyboard users */
+  .btn-primary-solid {
+    @apply inline-flex min-h-[48px] items-center justify-center px-8 text-center sm:px-10 py-3 text-sm font-medium uppercase tracking-[0.14em] text-white bg-neutral-900 transition-opacity hover:opacity-90 active:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2;
+  }
+
+  .home-section-title {
+    @apply text-2xl font-semibold tracking-tight text-neutral-900 md:text-3xl;
+  }
+
+  .home-eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-[0.2em] text-neutral-500;
+  }
+}
+
