@@ -19,7 +19,7 @@ export default function ProductCard({ product, badge, layout = "grid" }) {
   }
 
   return (
-    <article className="group">
+    <article className="group luxe-hover-lift">
       <Link href={`/product/${product.slug}`} className="block">
         <ProductCardImage
           title={title}

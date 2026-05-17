@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { socialLinks } from "../data/socialLinks";
 import { InstagramIcon, TikTokIcon } from "./SocialIcons";
 import brand from "../../brand.config";
+import CartLink from "./CartLink";
 
 const headerSocialIcons = { instagram: InstagramIcon, tiktok: TikTokIcon };
 const DARK_HERO_PATHS = ["/about", "/shop", "/contact", "/custom-orders"];
@@ -141,19 +142,7 @@ export default function Header() {
             </svg>
           </Link>
 
-          <Link
-            href="/cart"
-            aria-label="Cart"
-            className={`inline-flex h-9 w-9 shrink-0 items-center justify-center border transition-colors ${iconBtnClass}`}
-            onClick={closeMenu}
-          >
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M6 6h15l-1.5 9h-12z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-              <path d="M6 6l-2-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              <circle cx="9" cy="20" r="1.5" fill="currentColor" />
-              <circle cx="18" cy="20" r="1.5" fill="currentColor" />
-            </svg>
-          </Link>
+          <CartLink className={iconBtnClass} onClick={closeMenu} />
 
           <button
             type="button"
@@ -180,7 +169,7 @@ export default function Header() {
         <>
           <button
             type="button"
-            className="fixed inset-0 z-[60] bg-black/50 md:hidden"
+            className="fixed inset-0 z-[60] bg-black/50 md:hidden animate-fade-in backdrop-blur-[2px]"
             aria-label="Close menu"
             onClick={closeMenu}
           />
@@ -206,7 +195,7 @@ function MobileNavPanel({ nav, closeMenu, query, setQuery }) {
   return (
     <div
       id="mobile-navigation"
-      className="fixed inset-y-0 right-0 z-[70] flex w-[min(100vw-3rem,320px)] flex-col border-l border-neutral-200 bg-white shadow-xl md:hidden"
+      className="fixed inset-y-0 right-0 z-[70] flex w-[min(100vw-3rem,320px)] flex-col border-l border-neutral-200 bg-white shadow-xl md:hidden animate-slide-in-right"
       role="dialog"
       aria-modal="true"
       aria-label="Site menu"

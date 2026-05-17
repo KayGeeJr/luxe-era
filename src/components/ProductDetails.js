@@ -8,6 +8,7 @@ import VariantSelector from "./VariantSelector";
 import { api } from "../lib/api";
 import { formatRand } from "../lib/pricing";
 import { getSetSavings } from "../data/mockCatalog";
+import { dispatchCartUpdated } from "../lib/cartEvents";
 import brand from "../../brand.config";
 
 function toLegacyOptions(variants = []) {
@@ -80,7 +81,7 @@ export default function ProductDetails({ product, setContents }) {
         quantity: 1,
       });
       setAddedToCart(true);
-      window.dispatchEvent(new CustomEvent("luxe-cart-updated"));
+      dispatchCartUpdated();
     } catch (err) {
       setCartError(err?.message || "Could not add to cart. Please try again.");
     } finally {
@@ -254,7 +255,7 @@ function ProductAccordions({ setContents, product }) {
   return (
     <div className="mt-8 divide-y divide-neutral-200 border-t border-neutral-200">
       {setContents?.length > 0 ? (
-        <details className="group py-4" open>
+        <details className="group py-4 transition-colors duration-300" open>
           <summary className="flex cursor-pointer list-none items-center justify-between text-[11px] tracking-[0.14em] uppercase text-neutral-900">
             What&apos;s in this set
             <span className="text-neutral-400 transition group-open:rotate-45">+</span>
@@ -270,8 +271,8 @@ function ProductAccordions({ setContents, product }) {
         </details>
       ) : null}
 
-      <details className="group py-4">
-        <summary className="flex cursor-pointer list-none items-center justify-between text-[11px] tracking-[0.14em] uppercase text-neutral-900">
+      <details className="group py-4 transition-colors duration-300">
+        <summary className="flex cursor-pointer list-none items-center justify-between text-[11px] tracking-[0.14em] uppercase text-neutral-900 transition-colors duration-300 hover:text-accent">
           Materials &amp; care
           <span className="text-neutral-400 transition group-open:rotate-45">+</span>
         </summary>
@@ -282,8 +283,8 @@ function ProductAccordions({ setContents, product }) {
         </p>
       </details>
 
-      <details className="group py-4">
-        <summary className="flex cursor-pointer list-none items-center justify-between text-[11px] tracking-[0.14em] uppercase text-neutral-900">
+      <details className="group py-4 transition-colors duration-300">
+        <summary className="flex cursor-pointer list-none items-center justify-between text-[11px] tracking-[0.14em] uppercase text-neutral-900 transition-colors duration-300 hover:text-accent">
           Shipping
           <span className="text-neutral-400 transition group-open:rotate-45">+</span>
         </summary>

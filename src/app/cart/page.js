@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import PageHero from "../../components/PageHero";
 import { api } from "../../lib/api";
+import { dispatchCartUpdated } from "../../lib/cartEvents";
 import { formatRand } from "../../lib/pricing";
 
 export default function CartPage() {
@@ -41,6 +42,7 @@ export default function CartPage() {
     try {
       const data = await api.updateCart({ itemId, quantity });
       setCart(data.cart);
+      dispatchCartUpdated();
     } catch (err) {
       setError(err.message || "Could not update item");
     }
@@ -50,6 +52,7 @@ export default function CartPage() {
     try {
       const data = await api.removeCartItem(itemId);
       setCart(data.cart);
+      dispatchCartUpdated();
     } catch (err) {
       setError(err.message || "Could not remove item");
     }

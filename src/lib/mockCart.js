@@ -1,4 +1,5 @@
 import { getMockProductById } from "../data/mockCatalog";
+import { dispatchCartUpdated } from "./cartEvents";
 
 const CART_KEY = "luxe_era_mock_cart";
 
@@ -20,7 +21,11 @@ function readItems() {
 function writeItems(items) {
   if (!isBrowser()) return;
   localStorage.setItem(CART_KEY, JSON.stringify(items));
-  window.dispatchEvent(new CustomEvent("luxe-cart-updated"));
+  dispatchCartUpdated();
+}
+
+export function getMockCartCount() {
+  return readItems().reduce((sum, item) => sum + Number(item.quantity || 0), 0);
 }
 
 function emptyCart() {

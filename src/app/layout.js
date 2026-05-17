@@ -2,6 +2,7 @@ import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ScrollProgress from "../components/ScrollProgress";
+import PageTransition from "../components/PageTransition";
 import { Cormorant_Garamond, Inter_Tight } from "next/font/google";
 import brand from "../../brand.config";
 
@@ -37,7 +38,7 @@ export default function RootLayout({ children }) {
         <div className="min-h-screen flex flex-col">
           <Header />
           <main id="content" className="flex-1">
-            {children}
+            <PageTransition>{children}</PageTransition>
           </main>
           <Footer />
         </div>

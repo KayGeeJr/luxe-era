@@ -3,6 +3,7 @@
 import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import RevealOnScroll from "../../components/RevealOnScroll";
 import ProductCard from "../../components/ProductCard";
 import TrustStrip from "../../components/TrustStrip";
 import PriceListSection from "../../components/PriceListSection";
@@ -73,8 +74,10 @@ function ShopContent() {
         {showEditorialSets ? (
           <section className="mb-16 space-y-8">
             <ShopSetsHeader />
-            {allSets.map((set) => (
-              <ProductCard key={set.slug} product={set} layout="editorial" badge="Set" />
+            {allSets.map((set, i) => (
+              <RevealOnScroll key={set.slug} delayMs={i * 80}>
+                <ProductCard product={set} layout="editorial" badge="Set" />
+              </RevealOnScroll>
             ))}
           </section>
         ) : null}
@@ -91,8 +94,10 @@ function ShopContent() {
               </h2>
             )}
             <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
-              {(showEditorialSets ? pieces : products).map((p) => (
-                <ProductCard key={p.slug} product={p} />
+              {(showEditorialSets ? pieces : products).map((p, i) => (
+                <RevealOnScroll key={p.slug} delayMs={(i % 8) * 60}>
+                  <ProductCard product={p} />
+                </RevealOnScroll>
               ))}
             </div>
           </section>

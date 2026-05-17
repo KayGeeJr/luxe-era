@@ -96,10 +96,6 @@ html {
     @apply text-2xl sm:text-3xl font-extralight tracking-wide text-neutral-900;
   }
 
-  .card-surface {
-    @apply border border-neutral-200 bg-white p-6 sm:p-8;
-  }
-
   .card-surface-dark {
     @apply border border-white/10 bg-neutral-900/80 p-6 sm:p-8 backdrop-blur-sm;
   }
@@ -117,20 +113,32 @@ html {
   }
 
   .btn-primary-solid {
-    @apply inline-flex min-h-[48px] items-center justify-center px-10 text-[11px] tracking-[0.2em] uppercase text-white bg-neutral-950 transition hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2;
+    @apply inline-flex min-h-[48px] items-center justify-center px-10 text-[11px] tracking-[0.2em] uppercase text-white bg-neutral-950 transition-all duration-300 ease-luxe hover:bg-neutral-800 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2;
   }
 
   .btn-outline {
-    @apply inline-flex min-h-[48px] items-center justify-center border border-neutral-900 px-10 text-[11px] tracking-[0.2em] uppercase text-neutral-900 transition hover:bg-neutral-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2;
+    @apply inline-flex min-h-[48px] items-center justify-center border border-neutral-900 px-10 text-[11px] tracking-[0.2em] uppercase text-neutral-900 transition-all duration-300 ease-luxe hover:bg-neutral-900 hover:text-white active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2;
   }
 
   .btn-outline-light {
-    @apply inline-flex min-h-[48px] items-center justify-center border border-white/70 px-10 text-[11px] tracking-[0.2em] uppercase text-white transition hover:bg-white hover:text-neutral-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950;
+    @apply inline-flex min-h-[48px] items-center justify-center border border-white/70 px-10 text-[11px] tracking-[0.2em] uppercase text-white transition-all duration-300 ease-luxe hover:bg-white hover:text-neutral-950 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950;
   }
 
   .btn-accent-outline {
-    @apply inline-flex min-h-[48px] items-center justify-center border px-10 text-[11px] tracking-[0.2em] uppercase text-white transition hover:bg-white hover:text-neutral-950;
+    @apply inline-flex min-h-[48px] items-center justify-center border px-10 text-[11px] tracking-[0.2em] uppercase text-white transition-all duration-300 ease-luxe hover:bg-white hover:text-neutral-950 active:scale-[0.98];
     border-color: rgba(201, 169, 122, 0.55);
+  }
+
+  .luxe-hover-lift {
+    @apply transition-all duration-300 ease-luxe hover:-translate-y-0.5;
+  }
+
+  .luxe-link {
+    @apply transition-colors duration-300 ease-luxe;
+  }
+
+  .card-surface {
+    @apply border border-neutral-200 bg-white p-6 sm:p-8 transition-shadow duration-300 ease-luxe hover:shadow-md;
   }
 
   details > summary::-webkit-details-marker {

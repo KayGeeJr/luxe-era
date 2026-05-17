@@ -1,3 +1,4 @@
+import RevealOnScroll from "../components/RevealOnScroll";
 import TrustStrip from "../components/TrustStrip";
 import HomeHero from "../components/home/HomeHero";
 import HomeMarquee from "../components/home/HomeMarquee";
@@ -12,12 +13,24 @@ export default function HomePage() {
     <main className="bg-neutral-950">
       <HomeHero />
       <HomeMarquee />
-      <HomeFeaturedSets />
-      <TrustStrip variant="light" />
-      <HomePopularPieces />
-      <HomeStory />
-      <HomeCustomCta />
-      <HomeNewsletter />
+      <RevealOnScroll>
+        <HomeFeaturedSets />
+      </RevealOnScroll>
+      <RevealOnScroll delayMs={80}>
+        <TrustStrip variant="light" />
+      </RevealOnScroll>
+      <RevealOnScroll delayMs={120}>
+        <HomePopularPieces />
+      </RevealOnScroll>
+      <RevealOnScroll variant="image">
+        <HomeStory />
+      </RevealOnScroll>
+      <RevealOnScroll delayMs={100}>
+        <HomeCustomCta />
+      </RevealOnScroll>
+      <RevealOnScroll delayMs={160}>
+        <HomeNewsletter />
+      </RevealOnScroll>
     </main>
   );
 }
