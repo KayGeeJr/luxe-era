@@ -20,8 +20,8 @@ const brand = {
 
   // Social links
   social: [
-    { href: "https://www.instagram.com/luxeera/", label: "Instagram", icon: "instagram" },
-    { href: "https://www.tiktok.com/@luxeera", label: "TikTok", icon: "tiktok" },
+    { href: "https://www.instagram.com/luxeera.homecollections/", label: "Instagram", icon: "instagram" },
+    { href: "https://www.tiktok.com/@luxeera.homecollections?lang=en", label: "TikTok", icon: "tiktok" },
   ],
 
   // Currency
