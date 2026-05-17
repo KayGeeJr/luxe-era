@@ -1,6 +1,6 @@
 /**
  * Static catalog for design preview (no backend).
- * Prices in whole ZAR — from official Luxe Era price list (Obsidian collection).
+ * Prices in whole ZAR — from Luxe Era Obsidian price list (@luxeera.homecollections).
  */
 
 export const PRICE_LIST_IMAGE = "/images/price-list.png";
@@ -33,6 +33,7 @@ const IMG = {
   lumi3: "/images/collections/lumi/lumi-3.jpg",
 };
 
+/** Obsidian sets — order matches official price list */
 export const mockProducts = [
   {
     _id: "mock-halo-luxe-set",
@@ -42,7 +43,7 @@ export const mockProducts = [
     collection: "halo",
     price: 1000,
     description:
-      "Four hand-cast pieces — tray and three vases — hand-finished as a set. The fullest expression of the Obsidian line.",
+      "Obsidian Collection II — Aura tray plus Aurelia, Halo, and Jade vases. Four pieces, one vignette.",
     images: [IMG.halo2, IMG.auraTray, IMG.aureliaVase, IMG.haloVase, IMG.jadeVase],
     tags: ["Set", "Obsidian", "Collection II"],
     isFeatured: true,
@@ -61,7 +62,7 @@ export const mockProducts = [
     collection: "lumi",
     price: 900,
     description:
-      "Aura tray, two vases, and the Lumi box — scent, surface, and sculptural form in one curated set.",
+      "Obsidian Collection III — Aura tray, Halo and Jade vases, and the Lumi box for scent and keepsakes.",
     images: [IMG.lumi1, IMG.auraTray, IMG.haloVase, IMG.jadeVase],
     tags: ["Set", "Obsidian", "Collection III"],
     isFeatured: true,
@@ -80,7 +81,7 @@ export const mockProducts = [
     collection: "signature",
     price: 750,
     description:
-      "Mini Aura tray, Aurelia vase, and Lumi box — the signature entry point to Luxe Era Home Collections.",
+      "Obsidian Collection I — Mini Aura tray, Aurelia vase, and Lumi box. The signature entry to the line.",
     images: [IMG.sig3, IMG.miniAuraTray, IMG.aureliaVase, IMG.lumi1],
     tags: ["Set", "Obsidian", "Collection I"],
     isFeatured: true,
@@ -101,7 +102,7 @@ export const mockProducts = [
       "Large Aura tray — cast concrete with embedded signature veining. For keys, jewellery, or a single sculptural object.",
     images: [IMG.auraTray, IMG.sig4],
     tags: ["Tray", "Obsidian"],
-    isFeatured: false,
+    isFeatured: true,
   },
   {
     _id: "mock-mini-aura-tray",
@@ -114,7 +115,7 @@ export const mockProducts = [
       "Compact Aura form with the same hand-finished detail — ideal for bedside or desk.",
     images: [IMG.miniAuraTray, IMG.sig1],
     tags: ["Tray", "Mini", "Obsidian"],
-    isFeatured: false,
+    isFeatured: true,
   },
   {
     _id: "mock-aurelia-vase",
@@ -140,7 +141,7 @@ export const mockProducts = [
       "Mid-scale vessel named for the halo ring that crowns each cast — scent or single stem.",
     images: [IMG.haloVase, IMG.halo3],
     tags: ["Vase", "Obsidian"],
-    isFeatured: false,
+    isFeatured: true,
   },
   {
     _id: "mock-jade-vase",
@@ -153,7 +154,7 @@ export const mockProducts = [
       "The smallest vase in the line — intimate scale, full signature finish.",
     images: [IMG.jadeVase, IMG.lumi2],
     tags: ["Vase", "Obsidian"],
-    isFeatured: false,
+    isFeatured: true,
   },
   {
     _id: "mock-lumi-box",
