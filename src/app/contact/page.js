@@ -1,59 +1,99 @@
 "use client";
 
 import { useState } from "react";
+import PageHero from "../../components/PageHero";
+import RevealOnScroll from "../../components/RevealOnScroll";
+import brand from "../../../brand.config";
 
 export default function ContactPage() {
   const [status, setStatus] = useState("");
 
   return (
-    <div className="page-narrow">
-      <div className="page-kicker text-center">Contact</div>
-      <h1 className="mt-2 page-title text-center">Contact Us</h1>
+    <main className="bg-white">
+      <PageHero
+        eyebrow="Contact"
+        title="Let's"
+        titleAccent="connect"
+        image="/images/collections/halo/halo-1.jpg"
+        imageAlt="Contact Luxe Era"
+        minHeight="45vh"
+      />
 
-      <div className="mt-6 card-surface sm:mt-8">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setStatus("Submitted (mock). We’ll get back to you soon.");
-          }}
-          className="grid grid-cols-1 gap-3 sm:gap-4"
-        >
-          <label className="block">
-            <div className="text-sm text-neutral-700 mb-1">Name *</div>
-            <input required className="field-input" />
-          </label>
-          <label className="block">
-            <div className="text-sm text-neutral-700 mb-1">Email *</div>
-            <input type="email" required className="field-input" />
-          </label>
-          <label className="block">
-            <div className="text-sm text-neutral-700 mb-1">Phone Number *</div>
-            <input required className="field-input" />
-          </label>
-
-          <label className="block">
-            <div className="text-sm text-neutral-700 mb-1">Additional Information</div>
-            <textarea className="field-input" rows={4} />
-          </label>
-
-          <label className="block">
-            <div className="text-sm text-neutral-700 mb-1">Upload Reference Image</div>
-            <input type="file" className="w-full text-sm" />
-          </label>
-
-          <div className="flex justify-center pt-1">
-            <button
-              type="submit"
-              className="btn-primary-solid rounded-full px-10"
-            >
-              Submit
-            </button>
-          </div>
-
-          {status ? <div className="text-center text-sm text-neutral-700">{status}</div> : null}
-        </form>
-      </div>
-    </div>
+      <section className="luxe-section">
+        <div className="luxe-container">
+          <ContactGrid status={status} setStatus={setStatus} brand={brand} />
+        </div>
+      </section>
+    </main>
   );
 }
 
+function ContactGrid({ status, setStatus, brand }) {
+  return (
+    <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
+      <RevealOnScroll>
+        <p className="luxe-eyebrow text-neutral-400">Reach us</p>
+        <h2 className="mt-4 text-2xl sm:text-3xl font-extralight tracking-wide text-neutral-900">
+          We&apos;d love to hear from you.
+        </h2>
+        <p className="mt-5 text-sm leading-relaxed text-neutral-500">
+          Questions about an order, a collection, or a custom piece — send us a message and we&apos;ll
+          respond within one business day.
+        </p>
+        <ul className="mt-8 space-y-4 text-sm">
+          <li>
+            <span className="luxe-eyebrow text-neutral-400 block mb-1">Phone</span>
+            <a href={`tel:${brand.contact.phone.replace(/\s/g, "")}`} className="text-neutral-800 hover:text-accent transition-colors">
+              {brand.contact.phone}
+            </a>
+          </li>
+          <li>
+            <span className="luxe-eyebrow text-neutral-400 block mb-1">Email</span>
+            <a href={`mailto:${brand.contact.email}`} className="text-neutral-800 hover:text-accent transition-colors">
+              {brand.contact.email}
+            </a>
+          </li>
+        </ul>
+      </RevealOnScroll>
+
+      <RevealOnScroll delayMs={80}>
+        <div className="card-surface">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setStatus("Thank you — we'll be in touch shortly.");
+            }}
+            className="grid grid-cols-1 gap-4"
+          >
+            <label>
+              <span className="field-label">Name *</span>
+              <input required className="field-input" />
+            </label>
+            <label>
+              <span className="field-label">Email *</span>
+              <input type="email" required className="field-input" />
+            </label>
+            <label>
+              <span className="field-label">Phone *</span>
+              <input required className="field-input" />
+            </label>
+            <label>
+              <span className="field-label">Message</span>
+              <textarea className="field-input" rows={4} />
+            </label>
+            <label>
+              <span className="field-label">Reference image</span>
+              <input type="file" className="w-full text-sm text-neutral-600" />
+            </label>
+            <div className="pt-2">
+              <button type="submit" className="btn-primary-solid w-full sm:w-auto">
+                Send message
+              </button>
+            </div>
+            {status ? <p className="text-sm text-neutral-600">{status}</p> : null}
+          </form>
+        </div>
+      </RevealOnScroll>
+    </div>
+  );
+}

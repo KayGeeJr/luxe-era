@@ -1,38 +1,126 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { formatRand } from "../lib/pricing";
 
-export default function ProductCard({ product }) {
-  const firstImage = product.images?.[0];
-  const img = typeof firstImage === "string" ? firstImage : firstImage?.url || "/images/placeholder.svg";
+export default function ProductCard({ product, badge, layout = "grid" }) {
+  const images = (product.images || []).map((img) =>
+    typeof img === "string" ? img : img?.url,
+  ).filter(Boolean);
+  const primary = images[0] || "/images/placeholder.svg";
+  const hover = images[1] || primary;
   const title = product.title || product.name;
-  return (
-    <div className="group overflow-hidden rounded-2xl border border-neutral-200/70 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-md sm:rounded-3xl">
-      <Link href={`/product/${product.slug}`} className="block">
-        <div className="relative">
-          <div className="aspect-square bg-neutral-50 flex items-center justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={img}
-              alt={title}
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-            />
-          </div>
-          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/8 via-transparent to-transparent" />
-        </div>
+  const showBadge = badge || (product.kind === "set" ? "Set" : null);
+  const [imgSrc, setImgSrc] = useState(primary);
 
-        <div className="px-2 py-3 text-center sm:p-4">
-          <div className="text-xs font-medium leading-snug group-hover:underline transition sm:text-sm">
-            {title}
-          </div>
-          <div className="mt-1.5 text-xs font-semibold text-neutral-900 sm:mt-2 sm:text-sm">{formatRand(product.price)}</div>
-          <div className="mt-2 flex justify-center sm:mt-3">
-            <span className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-3 py-1.5 text-center text-[10px] text-white sm:px-5 sm:py-2 sm:text-[11px]">
-              SHOP
-            </span>
-          </div>
-        </div>
+  if (layout === "editorial") {
+    return <EditorialCard product={product} title={title} showBadge={showBadge} primary={primary} />;
+  }
+
+  return (
+    <article className="group">
+      <Link href={`/product/${product.slug}`} className="block">
+        <ProductCardImage
+          title={title}
+          primary={primary}
+          hover={hover}
+          imgSrc={imgSrc}
+          setImgSrc={setImgSrc}
+          showBadge={showBadge}
+        />
+        <ProductCardInfo title={title} price={product.price} />
       </Link>
+    </article>
+  );
+}
+
+function ProductCardImage({ title, primary, hover, imgSrc, setImgSrc, showBadge }) {
+  return (
+    <ProductCardImageRoot
+      title={title}
+      primary={primary}
+      hover={hover}
+      imgSrc={imgSrc}
+      setImgSrc={setImgSrc}
+      showBadge={showBadge}
+    />
+  );
+}
+
+function ProductCardImageRoot({ title, primary, hover, imgSrc, setImgSrc, showBadge }) {
+  return (
+    <div
+      className="relative aspect-[3/4] overflow-hidden bg-[#f4f2ef]"
+      onMouseEnter={() => setImgSrc(hover)}
+      onMouseLeave={() => setImgSrc(primary)}
+    >
+      {showBadge ? (
+        <span className="absolute left-3 top-3 z-10 bg-white/95 px-2.5 py-1 text-[10px] font-medium tracking-[0.14em] uppercase text-neutral-900">
+          {showBadge}
+        </span>
+      ) : null}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={imgSrc}
+        alt={title}
+        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+      />
+      <div className="absolute inset-x-0 bottom-0 flex translate-y-full justify-center pb-4 transition-transform duration-300 group-hover:translate-y-0">
+        <span className="bg-white/95 px-4 py-2 text-[10px] tracking-[0.16em] uppercase text-neutral-900 shadow-sm">
+          Quick view
+        </span>
+      </div>
     </div>
   );
 }
 
+function ProductCardInfo({ title, price }) {
+  return (
+    <div className="pt-4">
+      <h3 className="text-sm font-normal text-neutral-900 line-clamp-2">{title}</h3>
+      <p className="mt-1.5 text-sm text-neutral-600">{formatRand(price)}</p>
+    </div>
+  );
+}
+
+function EditorialCard({ product, title, showBadge, primary }) {
+  return (
+    <Link
+      href={`/product/${product.slug}`}
+      className="group grid grid-cols-1 overflow-hidden border border-white/10 bg-white md:grid-cols-2"
+    >
+      <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[420px]">
+        {showBadge ? (
+          <span className="absolute left-4 top-4 z-10 bg-white px-3 py-1 text-[10px] tracking-[0.14em] uppercase">
+            {showBadge}
+          </span>
+        ) : null}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={primary}
+          alt={title}
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      </div>
+      <EditorialCardBody product={product} title={title} />
+    </Link>
+  );
+}
+
+function EditorialCardBody({ product, title }) {
+  return (
+    <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
+      <p className="luxe-eyebrow text-neutral-400">Curated set</p>
+      <h3 className="mt-3 font-display text-3xl font-light text-neutral-900 md:text-4xl">{title}</h3>
+      <p className="mt-3 max-w-sm text-sm leading-relaxed text-neutral-600 line-clamp-3">
+        {product.description}
+      </p>
+      <p className="mt-6 text-lg text-neutral-900">{formatRand(product.price)}</p>
+      <span className="mt-6 inline-flex items-center gap-2 text-[11px] tracking-[0.18em] uppercase text-accent">
+        View set
+        <span aria-hidden="true">→</span>
+      </span>
+    </div>
+  );
+}

@@ -7,58 +7,123 @@ const socialIcons = { instagram: InstagramIcon, tiktok: TikTokIcon };
 
 export default function Footer() {
   return (
-    <footer className="border-t border-neutral-200 bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-8 text-center">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div>
-            <div className="font-semibold tracking-tight mb-2">{brand.storeName}</div>
-            <div className="text-sm text-neutral-600">{brand.tagline}</div>
-          </div>
-          <div>
-            <div className="font-semibold tracking-tight mb-2">Explore</div>
-            <div className="flex flex-col gap-2 text-sm text-neutral-700 items-center">
-              {brand.nav.map((item) => (
-                <Link key={item.href} href={item.href} className="hover:opacity-80">
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="font-semibold tracking-tight mb-2">Contact</div>
-            <div className="text-sm text-neutral-700">
-              <div>Phone: {brand.contact.phone}</div>
-              <div>Email: {brand.contact.email}</div>
-            </div>
-
-            {socialLinks.length > 0 && (
-              <div className="mt-4">
-                <div className="text-xs font-medium uppercase tracking-[0.16em] text-neutral-500">Social</div>
-                <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-                  {socialLinks.map((s) => {
-                    const Icon = socialIcons[s.icon];
-                    return (
-                      <a
-                        key={s.href}
-                        href={s.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2 text-xs font-medium text-neutral-900 transition hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
-                      >
-                        {Icon ? <Icon className="h-4 w-4" /> : null}
-                        {s.label}
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="mt-8 text-xs text-neutral-500">
-          Copyright &copy; {new Date().getFullYear()} {brand.domain}
-        </div>
-      </div>
+    <footer className="border-t border-white/10 bg-neutral-950 text-white">
+      <FooterContainer />
     </footer>
+  );
+}
+
+function FooterContainer() {
+  return (
+    <div className="luxe-container py-14 sm:py-20">
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4 md:gap-8">
+        <FooterBrand />
+        <FooterNav />
+        <FooterContact />
+        <FooterFollow />
+      </div>
+      <FooterBottom />
+    </div>
+  );
+}
+
+function FooterBrand() {
+  return (
+    <div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={brand.logo}
+        alt={brand.storeName}
+        className="h-10 w-auto brightness-0 invert opacity-90"
+      />
+      <p className="mt-4 text-sm leading-relaxed text-white/50">
+        Handcrafted home collections. Concrete and resin — made in South Africa.
+      </p>
+    </div>
+  );
+}
+
+function FooterNav() {
+  return (
+    <div>
+      <p className="luxe-eyebrow mb-4 text-white/40">Explore</p>
+      <ul className="space-y-2.5">
+        {brand.nav.map((item) => (
+          <li key={item.href}>
+            <Link
+              href={item.href}
+              className="text-sm text-white/70 transition-colors hover:text-accent"
+            >
+              {item.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function FooterContact() {
+  return (
+    <div>
+      <p className="luxe-eyebrow mb-4 text-white/40">Contact</p>
+      <ul className="space-y-2 text-sm text-white/70">
+        <li>
+          <a
+            href={`tel:${brand.contact.phone.replace(/\s/g, "")}`}
+            className="transition-colors hover:text-accent"
+          >
+            {brand.contact.phone}
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${brand.contact.email}`} className="transition-colors hover:text-accent">
+            {brand.contact.email}
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+function FooterFollow() {
+  return (
+    <div>
+      <p className="luxe-eyebrow mb-4 text-white/40">Follow</p>
+      <FooterSocialLinks />
+    </div>
+  );
+}
+
+function FooterSocialLinks() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {socialLinks.map((s) => {
+        const Icon = socialIcons[s.icon];
+        return (
+          <a
+            key={s.href}
+            href={s.href}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 border border-white/15 px-4 py-2 text-xs tracking-wide text-white/80 transition hover:border-accent/50 hover:text-accent"
+          >
+            {Icon ? <Icon className="h-4 w-4" /> : null}
+            {s.label}
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+
+function FooterBottom() {
+  return (
+    <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
+      <p className="text-[10px] tracking-[0.2em] uppercase text-white/40">
+        &copy; {new Date().getFullYear()} {brand.domain}
+      </p>
+      <p className="max-w-sm text-center text-xs text-white/50 sm:text-right">{brand.tagline}</p>
+    </div>
   );
 }

@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import ProductGallery from "./ProductGallery";
 import VariantSelector from "./VariantSelector";
 import { api } from "../lib/api";
 import { formatRand } from "../lib/pricing";
+import { getSetSavings } from "../data/mockCatalog";
+import brand from "../../brand.config";
 
 function toLegacyOptions(variants = []) {
   if (!Array.isArray(variants) || variants.length === 0) return [];
@@ -16,12 +20,17 @@ function toLegacyOptions(variants = []) {
   return options;
 }
 
-export default function ProductDetails({ product }) {
+const freeShippingLabel = `Free delivery on orders over R${brand.freeShippingAboveZar / 100}`;
+
+export default function ProductDetails({ product, setContents }) {
   const router = useRouter();
   const options = product?.options?.length ? product.options : toLegacyOptions(product?.variants);
   const images = product?.images?.length
     ? product.images.map((img) => (typeof img === "string" ? img : img.url)).filter(Boolean)
     : ["/images/placeholder.svg"];
+
+  const savings = getSetSavings(product);
+  const title = product.title || product.name;
 
   const optionSignature = useMemo(
     () => options.map((o) => `${o.name}:${o.values.join(",")}`).join("|"),
@@ -34,10 +43,9 @@ export default function ProductDetails({ product }) {
     return initial;
   });
 
-  const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [addingToCart, setAddingToCart] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
   const [cartError, setCartError] = useState("");
-  const stripRef = useRef(null);
 
   const sizeStockMap = useMemo(() => {
     const map = {};
@@ -53,41 +61,12 @@ export default function ProductDetails({ product }) {
     setSelected(initial);
   }, [optionSignature]);
 
-  useEffect(() => {
-    setActiveImageIdx(0);
-  }, [product?.slug]);
-
   const optionNames = useMemo(() => options.map((o) => o.name), [options]);
-  const hasAllSelections = optionNames.every((name) => selected[name]);
-
-  const clampedIdx = Math.min(activeImageIdx, images.length - 1);
-  const activeSrc = images[clampedIdx] || images[0];
-  const title = product.title || product.name;
-
-  function scrollToIdx(idx) {
-    const el = stripRef.current;
-    if (!el) return;
-    const child = el.children[idx];
-    if (child) child.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
-    setActiveImageIdx(idx);
-  }
-
-  function prevImage() {
-    scrollToIdx((activeImageIdx - 1 + images.length) % images.length);
-  }
-  function nextImage() {
-    scrollToIdx((activeImageIdx + 1) % images.length);
-  }
-
-  function handleStripScroll() {
-    const el = stripRef.current;
-    if (!el) return;
-    const idx = Math.round(el.scrollLeft / el.clientWidth);
-    setActiveImageIdx(Math.max(0, Math.min(idx, images.length - 1)));
-  }
+  const hasAllSelections = optionNames.length === 0 || optionNames.every((name) => selected[name]);
 
   async function handleAddToCart() {
     setCartError("");
+    setAddedToCart(false);
     setAddingToCart(true);
     try {
       const selectedVariantIndex = (product.variants || []).findIndex(
@@ -100,7 +79,8 @@ export default function ProductDetails({ product }) {
         variantIndex: selectedVariantIndex >= 0 ? selectedVariantIndex : 0,
         quantity: 1,
       });
-      router.push("/cart");
+      setAddedToCart(true);
+      window.dispatchEvent(new CustomEvent("luxe-cart-updated"));
     } catch (err) {
       setCartError(err?.message || "Could not add to cart. Please try again.");
     } finally {
@@ -109,176 +89,209 @@ export default function ProductDetails({ product }) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
+    <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-14 xl:gap-20">
+      <ProductGallery images={images} title={title} />
 
-      {/* ── Images ──────────────────────────────────────────────────── */}
-      <div className="flex flex-col gap-3">
-        {/* Scrollable image strip */}
-        <div className="relative">
-          <div
-            ref={stripRef}
-            onScroll={handleStripScroll}
-            className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar rounded-2xl"
-            aria-label="Product images"
-          >
-            {images.map((src, idx) => (
-              <div key={`${src}-${idx}`} className="flex-none w-full snap-start aspect-[4/5] bg-neutral-100 overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={src}
-                  alt={`${title} — image ${idx + 1}`}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-
-          {images.length > 1 && (
-            <>
-              <button
-                type="button"
-                onClick={prevImage}
-                aria-label="Previous image"
-                className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 shadow backdrop-blur-sm transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={nextImage}
-                aria-label="Next image"
-                className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 shadow backdrop-blur-sm transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </button>
-
-              {/* Dot indicators */}
-              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
-                {images.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => scrollToIdx(i)}
-                    aria-label={`Go to image ${i + 1}`}
-                    className={`h-1.5 rounded-full transition-all focus-visible:outline-none ${
-                      i === clampedIdx ? "w-5 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80"
-                    }`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
+      <div className="mt-8 lg:mt-0">
+        <div className="lg:sticky lg:top-28">
+          <ProductBuyBox
+            product={product}
+            title={title}
+            savings={savings}
+            options={options}
+            selected={selected}
+            setSelected={setSelected}
+            sizeStockMap={sizeStockMap}
+            hasAllSelections={hasAllSelections}
+            addingToCart={addingToCart}
+            addedToCart={addedToCart}
+            handleAddToCart={handleAddToCart}
+            cartError={cartError}
+            router={router}
+            setContents={setContents}
+          />
         </div>
+      </div>
+    </div>
+  );
+}
 
-        {/* Thumbnail strip */}
-        {images.length > 1 && (
-          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-            {images.map((src, idx) => {
-              const active = idx === clampedIdx;
-              return (
-                <button
-                  key={`${src}-${idx}`}
-                  type="button"
-                  onClick={() => scrollToIdx(idx)}
-                  aria-label={`View image ${idx + 1}`}
-                  aria-current={active ? "true" : "false"}
-                  className={[
-                    "flex-none h-[72px] w-[72px] overflow-hidden rounded-xl border-2 bg-neutral-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-1",
-                    active ? "border-neutral-900" : "border-transparent opacity-60 hover:opacity-90",
-                  ].join(" ")}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={src}
-                    alt={`${title} thumbnail ${idx + 1}`}
-                    className="h-full w-full object-cover"
-                  />
-                </button>
-              );
-            })}
-          </div>
-        )}
+function ProductBuyBox(props) {
+  const {
+    product,
+    title,
+    savings,
+    options,
+    selected,
+    setSelected,
+    sizeStockMap,
+    hasAllSelections,
+    addingToCart,
+    addedToCart,
+    handleAddToCart,
+    cartError,
+    router,
+    setContents,
+  } = props;
+
+  return (
+    <ProductBuyBoxInner
+      product={product}
+      title={title}
+      savings={savings}
+      options={options}
+      selected={selected}
+      setSelected={setSelected}
+      sizeStockMap={sizeStockMap}
+      hasAllSelections={hasAllSelections}
+      addingToCart={addingToCart}
+      addedToCart={addedToCart}
+      handleAddToCart={handleAddToCart}
+      cartError={cartError}
+      router={router}
+      setContents={setContents}
+    />
+  );
+}
+
+function ProductBuyBoxInner(props) {
+  const {
+    product,
+    title,
+    savings,
+    options,
+    selected,
+    setSelected,
+    sizeStockMap,
+    hasAllSelections,
+    addingToCart,
+    addedToCart,
+    handleAddToCart,
+    cartError,
+    router,
+    setContents,
+  } = props;
+
+  return (
+    <>
+      {product.kind === "set" ? (
+        <p className="text-[11px] font-medium tracking-[0.14em] uppercase text-accent">Curated set</p>
+      ) : product.tags?.[0] ? (
+        <p className="text-[11px] tracking-[0.14em] uppercase text-neutral-400">{product.tags[0]}</p>
+      ) : null}
+
+      <h1 className="mt-2 font-display text-3xl font-light leading-tight text-neutral-900 sm:text-4xl">
+        {title}
+      </h1>
+
+      <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <span className="text-xl text-neutral-900">{formatRand(product.price)}</span>
+        {savings ? (
+          <span className="text-sm text-accent">Save {formatRand(savings)} vs. separate</span>
+        ) : null}
       </div>
 
-      {/* ── Details ─────────────────────────────────────────────────── */}
-      <div className="flex flex-col">
-        {product.category?.name && (
-          <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400">
-            {product.category.name}
-          </p>
-        )}
+      {product.description ? (
+        <p className="mt-5 text-sm leading-relaxed text-neutral-600">{product.description}</p>
+      ) : null}
 
-        <h1 className="mt-2 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
-          {title}
-        </h1>
-
-        <div className="mt-3 flex items-baseline gap-3">
-          <span className="text-2xl font-semibold text-neutral-900">
-            {formatRand(product.price)}
-          </span>
-          {product.compareAtPrice && product.compareAtPrice > product.price && (
-            <span className="text-base text-neutral-400 line-through">
-              {formatRand(product.compareAtPrice)}
-            </span>
-          )}
+      {options.length > 0 ? (
+        <div className="mt-6 space-y-5 border-t border-neutral-200 pt-6">
+          {options.map((opt) => (
+            <VariantSelector
+              key={opt.name}
+              option={opt}
+              value={selected[opt.name]}
+              onChange={(v) => setSelected((prev) => ({ ...prev, [opt.name]: v }))}
+              stockByValue={opt.name === "size" ? sizeStockMap : undefined}
+            />
+          ))}
         </div>
+      ) : null}
 
-        {product.description && (
-          <p className="mt-4 text-sm leading-relaxed text-neutral-600 sm:text-base">
-            {product.description}
-          </p>
-        )}
-
-        {/* Variant selectors */}
-        {options.length > 0 && (
-          <div className="mt-6 space-y-4">
-            {options.map((opt) => (
-              <VariantSelector
-                key={opt.name}
-                option={opt}
-                value={selected[opt.name]}
-                onChange={(v) => setSelected((prev) => ({ ...prev, [opt.name]: v }))}
-                stockByValue={opt.name === "size" ? sizeStockMap : undefined}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Add to cart */}
-        <div className="mt-8">
+      <div className="mt-8 space-y-3">
+        <button
+          type="button"
+          disabled={!hasAllSelections || addingToCart}
+          onClick={handleAddToCart}
+          className={[
+            "w-full min-h-[52px] text-[11px] tracking-[0.2em] uppercase transition",
+            addedToCart
+              ? "bg-accent text-white"
+              : hasAllSelections && !addingToCart
+                ? "bg-neutral-950 text-white hover:bg-neutral-800"
+                : "cursor-not-allowed bg-neutral-100 text-neutral-400",
+          ].join(" ")}
+        >
+          {addingToCart ? "Adding…" : addedToCart ? "Added to cart" : "Add to cart"}
+        </button>
+        {addedToCart ? (
           <button
             type="button"
-            disabled={!hasAllSelections || addingToCart}
-            onClick={handleAddToCart}
-            className={[
-              "w-full rounded-full border px-6 py-3.5 text-sm font-semibold tracking-wide transition",
-              hasAllSelections && !addingToCart
-                ? "bg-neutral-900 text-white border-neutral-900 hover:bg-neutral-800 active:bg-neutral-950"
-                : "cursor-not-allowed bg-neutral-100 text-neutral-400 border-neutral-100",
-            ].join(" ")}
+            onClick={() => router.push("/cart")}
+            className="btn-outline block w-full text-center !min-h-[44px]"
           >
-            {addingToCart ? "Adding…" : hasAllSelections ? "Add to cart" : "Select options to continue"}
+            View cart
           </button>
-          {cartError && (
-            <p className="mt-2.5 text-center text-sm text-red-500">{cartError}</p>
-          )}
-        </div>
-
-        {/* Tags */}
-        {product.tags?.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-1.5">
-            {product.tags.map((tag) => (
-              <span key={tag} className="rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-500">
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+        ) : null}
+        {cartError ? <p className="text-center text-sm text-red-600">{cartError}</p> : null}
+        <Link
+          href="/custom-orders"
+          className="block text-center text-[10px] tracking-[0.16em] uppercase text-neutral-500 transition hover:text-accent"
+        >
+          Need something bespoke? Enquire →
+        </Link>
       </div>
+
+      <p className="mt-4 text-xs text-neutral-500">{freeShippingLabel}</p>
+
+      <ProductAccordions setContents={setContents} product={product} />
+    </>
+  );
+}
+
+function ProductAccordions({ setContents, product }) {
+  return (
+    <div className="mt-8 divide-y divide-neutral-200 border-t border-neutral-200">
+      {setContents?.length > 0 ? (
+        <details className="group py-4" open>
+          <summary className="flex cursor-pointer list-none items-center justify-between text-[11px] tracking-[0.14em] uppercase text-neutral-900">
+            What&apos;s in this set
+            <span className="text-neutral-400 transition group-open:rotate-45">+</span>
+          </summary>
+          <ul className="mt-4 space-y-2">
+            {setContents.map((item) => (
+              <li key={item.name} className="flex justify-between text-sm text-neutral-600">
+                <span>{item.name}</span>
+                <span>{formatRand(item.price)}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+
+      <details className="group py-4">
+        <summary className="flex cursor-pointer list-none items-center justify-between text-[11px] tracking-[0.14em] uppercase text-neutral-900">
+          Materials &amp; care
+          <span className="text-neutral-400 transition group-open:rotate-45">+</span>
+        </summary>
+        <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+          Hand-cast concrete and resin with embedded signature veining. Wipe with a soft damp cloth; avoid
+          harsh chemicals and prolonged standing water. Each piece is unique — colour and veining vary
+          slightly.
+        </p>
+      </details>
+
+      <details className="group py-4">
+        <summary className="flex cursor-pointer list-none items-center justify-between text-[11px] tracking-[0.14em] uppercase text-neutral-900">
+          Shipping
+          <span className="text-neutral-400 transition group-open:rotate-45">+</span>
+        </summary>
+        <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+          {freeShippingLabel}. We ship across South Africa; dispatch within 3–5 business days after
+          payment. Custom pieces may require additional lead time.
+        </p>
+      </details>
     </div>
   );
 }

@@ -1,5 +1,17 @@
+import {
+  addToMockCart,
+  clearMockCart,
+  getMockCart,
+  removeMockCartItem,
+  updateMockCart,
+} from "./mockCart";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "/api-proxy";
 const LOCAL_API_FALLBACK = "http://localhost:5001/api";
+
+function useMockCart() {
+  return process.env.NEXT_PUBLIC_USE_MOCK_CATALOG !== "false";
+}
 
 const TOKEN_KEY = "anti_token";
 const SESSION_KEY = "anti_session_id";
@@ -157,11 +169,21 @@ export const api = {
   updateCategory: (id, formData) => apiFetch(`/categories/${id}`, { method: "PUT", body: formData }),
   deleteCategory: (id) => apiFetch(`/categories/${id}`, { method: "DELETE" }),
   listCollections: () => apiFetch("/collections"),
-  getCart: () => apiFetch("/cart"),
-  addToCart: (data) => apiFetch("/cart/add", { method: "POST", body: data }),
-  updateCart: (data) => apiFetch("/cart/update", { method: "PUT", body: data }),
-  removeCartItem: (itemId) => apiFetch(`/cart/item/${itemId}`, { method: "DELETE" }),
-  clearCart: () => apiFetch("/cart/clear", { method: "DELETE" }),
+  getCart: () => (useMockCart() ? Promise.resolve(getMockCart()) : apiFetch("/cart")),
+  addToCart: (data) =>
+    useMockCart()
+      ? Promise.resolve(addToMockCart(data))
+      : apiFetch("/cart/add", { method: "POST", body: data }),
+  updateCart: (data) =>
+    useMockCart()
+      ? Promise.resolve(updateMockCart(data))
+      : apiFetch("/cart/update", { method: "PUT", body: data }),
+  removeCartItem: (itemId) =>
+    useMockCart()
+      ? Promise.resolve(removeMockCartItem(itemId))
+      : apiFetch(`/cart/item/${itemId}`, { method: "DELETE" }),
+  clearCart: () =>
+    useMockCart() ? Promise.resolve(clearMockCart()) : apiFetch("/cart/clear", { method: "DELETE" }),
   mergeCart: (sessionId) => apiFetch("/cart/merge", { method: "POST", body: { sessionId } }),
   createOrder: (data) => apiFetch("/orders", { method: "POST", body: data }),
   myOrders: () => apiFetch("/orders/my-orders"),

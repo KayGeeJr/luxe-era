@@ -1,70 +1,101 @@
 "use client";
 
 import { useState } from "react";
-import CustomOrdersCarousel from "../../components/CustomOrdersCarousel";
+import PageHero from "../../components/PageHero";
+import RevealOnScroll from "../../components/RevealOnScroll";
+import ImageReveal from "../../components/ImageReveal";
 
-// Add the client's custom order showcase images here.
-// Place images in /public/images/custom/ and list them below.
-const customImages = [
-  // "/images/custom/example1.jpg",
-  // "/images/custom/example2.jpg",
+const showcaseImages = [
+  "/images/collections/signature/sig-5.jpg",
+  "/images/collections/halo/halo-3.jpg",
+  "/images/collections/lumi/lumi-3.jpg",
+  "/images/collections/signature/sig-6.jpg",
 ];
 
 export default function CustomOrdersPage() {
   const [status, setStatus] = useState("");
 
   return (
-    <div className="page-narrow">
-      <div className="page-kicker text-center">Custom</div>
-      <h1 className="mt-2 page-title text-center">Custom Orders</h1>
-      <p className="mt-2 text-sm leading-snug text-neutral-700 sm:mt-3 sm:leading-relaxed">
-        We tailor each piece to your vision. Fill in the form below and we&apos;ll be in touch.
-      </p>
+    <main className="bg-white">
+      <PageHero
+        eyebrow="Bespoke"
+        title="Made only"
+        titleAccent="for you"
+        image="/images/collections/halo/halo-4.jpg"
+        imageAlt="Luxe Era custom orders"
+        minHeight="50vh"
+      />
 
-      {customImages.length > 0 && <CustomOrdersCarousel images={customImages} />}
+      <section className="luxe-section border-b border-neutral-100">
+        <div className="luxe-container">
+          <RevealOnScroll>
+            <p className="luxe-eyebrow text-neutral-400">The process</p>
+            <h2 className="mt-3 text-2xl sm:text-3xl font-extralight tracking-wide text-neutral-900">
+              Collaborate on finish, form, and fragrance.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-500">
+              We accept a small number of custom commissions each month. Share your vision — colour,
+              scale, scent — and we&apos;ll cast something that exists nowhere else.
+            </p>
+          </RevealOnScroll>
 
-      <div className="mt-6 card-surface sm:mt-8">
-        <h2 className="text-center font-semibold tracking-tight">Place Order</h2>
-
-        <form
-          className="mt-4 sm:mt-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setStatus("Submitted. We'll get back to you soon.");
-          }}
-        >
-          <div className="grid grid-cols-1 gap-3 sm:gap-4">
-            <label className="block">
-              <div className="text-sm text-neutral-700 mb-1">Name *</div>
-              <input required className="field-input" />
-            </label>
-            <label className="block">
-              <div className="text-sm text-neutral-700 mb-1">Email *</div>
-              <input type="email" required className="field-input" />
-            </label>
-            <label className="block">
-              <div className="text-sm text-neutral-700 mb-1">Phone Number *</div>
-              <input required className="field-input" />
-            </label>
-            <label className="block">
-              <div className="text-sm text-neutral-700 mb-1">Additional Information</div>
-              <textarea className="field-input" rows={4} />
-            </label>
-            <label className="block">
-              <div className="text-sm text-neutral-700 mb-1">Upload Reference Image</div>
-              <input type="file" required className="w-full text-sm" />
-            </label>
-
-            <div className="flex justify-center pt-1">
-              <button type="submit" className="btn-primary-solid rounded-full px-10">
-                Submit
-              </button>
-            </div>
+          <div className="mt-10 grid grid-cols-2 gap-1 sm:grid-cols-4 sm:gap-2">
+            {showcaseImages.map((src) => (
+              <div key={src} className="aspect-square bg-neutral-950">
+                <ImageReveal src={src} alt="Custom Luxe Era piece" />
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          {status ? <div className="mt-4 text-center text-sm text-neutral-700">{status}</div> : null}
-        </form>
-      </div>
-    </div>
+      <section className="luxe-section bg-neutral-50">
+        <div className="luxe-container max-w-2xl">
+          <RevealOnScroll>
+            <p className="luxe-eyebrow text-neutral-400 text-center">Enquire</p>
+            <h2 className="mt-3 text-center text-xl font-extralight tracking-wide text-neutral-900">
+              Start your custom order
+            </h2>
+
+            <div className="mt-8 card-surface">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setStatus("Submitted. We'll be in touch within 48 hours.");
+                }}
+                className="grid grid-cols-1 gap-4"
+              >
+                <label>
+                  <span className="field-label">Name *</span>
+                  <input required className="field-input" />
+                </label>
+                <label>
+                  <span className="field-label">Email *</span>
+                  <input type="email" required className="field-input" />
+                </label>
+                <label>
+                  <span className="field-label">Phone *</span>
+                  <input required className="field-input" />
+                </label>
+                <label>
+                  <span className="field-label">Your vision</span>
+                  <textarea className="field-input" rows={4} placeholder="Colour, form, fragrance, dimensions…" />
+                </label>
+                <label>
+                  <span className="field-label">Reference image *</span>
+                  <input type="file" required className="w-full text-sm text-neutral-600" />
+                </label>
+                <div className="pt-2 flex justify-center">
+                  <button type="submit" className="btn-primary-solid">
+                    Submit enquiry
+                  </button>
+                </div>
+                {status ? <p className="text-center text-sm text-neutral-600">{status}</p> : null}
+              </form>
+            </div>
+          </RevealOnScroll>
+        </div>
+      </section>
+    </main>
   );
 }
