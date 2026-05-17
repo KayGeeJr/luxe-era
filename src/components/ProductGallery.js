@@ -61,9 +61,13 @@ function GalleryRoot({ images, title, clampedIdx, activeSrc, setActiveIdx, strip
 
       <div className="relative min-w-0 flex-1">
         <GalleryMobile images={images} title={title} stripRef={stripRef} handleStripScroll={handleStripScroll} />
-        <div className="hidden md:block aspect-[4/5] bg-neutral-100 overflow-hidden">
+        <div className="hidden md:block aspect-[4/5] bg-neutral-100 overflow-hidden" data-reveal="image">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={activeSrc} alt={title} className="h-full w-full object-cover" />
+          <img
+            src={activeSrc}
+            alt={title}
+            className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          />
         </div>
         {images.length > 1 ? (
           <GalleryDots images={images} clampedIdx={clampedIdx} goTo={goTo} />

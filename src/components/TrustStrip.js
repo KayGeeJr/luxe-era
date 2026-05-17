@@ -3,18 +3,9 @@ import brand from "../../brand.config";
 const freeShippingRand = brand.freeShippingAboveZar / 100;
 
 const perks = [
-  {
-    title: "Handmade in SA",
-    body: "Cast and finished in small batches",
-  },
-  {
-    title: `Free shipping over R${freeShippingRand}`,
-    body: "On qualifying orders nationwide",
-  },
-  {
-    title: "Limited editions",
-    body: "Each piece is unique in its veining",
-  },
+  { title: "Handmade in SA", body: "Cast and finished in small batches" },
+  { title: "Free shipping", body: `On orders over R${freeShippingRand}` },
+  { title: "Secure checkout", body: "Your details stay private" },
 ];
 
 export default function TrustStrip({ variant = "dark" }) {
@@ -33,8 +24,13 @@ export default function TrustStrip({ variant = "dark" }) {
           light ? "divide-neutral-200" : "divide-white/10"
         }`}
       >
-        {perks.map((p) => (
-          <div key={p.title} className="px-2 py-5 text-center sm:py-6">
+        {perks.map((p, i) => (
+          <div
+            key={p.title}
+            data-reveal="text"
+            data-reveal-delay={String(i * 90)}
+            className="px-2 py-5 text-center sm:py-6"
+          >
             <p
               className={`text-[11px] font-medium tracking-[0.12em] uppercase ${
                 light ? "text-neutral-900" : "text-white/90"

@@ -17,12 +17,22 @@ function FooterContainer() {
   return (
     <div className="luxe-container py-14 sm:py-20">
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4 md:gap-8">
-        <FooterBrand />
-        <FooterNav />
-        <FooterContact />
-        <FooterFollow />
+        <div data-reveal="text" data-reveal-delay="0">
+          <FooterBrand />
+        </div>
+        <div data-reveal="text" data-reveal-delay="80">
+          <FooterNav />
+        </div>
+        <div data-reveal="text" data-reveal-delay="160">
+          <FooterContact />
+        </div>
+        <div data-reveal="text" data-reveal-delay="240">
+          <FooterFollow />
+        </div>
       </div>
-      <FooterBottom />
+      <div data-reveal="fade" data-reveal-delay="120">
+        <FooterBottom />
+      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ScrollProgress from "../components/ScrollProgress";
 import PageTransition from "../components/PageTransition";
+import GlobalRevealInit from "../components/GlobalRevealInit";
 import { Cormorant_Garamond, Inter_Tight } from "next/font/google";
 import brand from "../../brand.config";
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${interTight.variable} ${cormorant.variable} font-sans antialiased`}>
+        <GlobalRevealInit />
         <ScrollProgress />
         <div className="min-h-screen flex flex-col">
           <Header />

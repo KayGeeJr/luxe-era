@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductGallery from "./ProductGallery";
+import RevealOnScroll from "./RevealOnScroll";
 import VariantSelector from "./VariantSelector";
 import { api } from "../lib/api";
 import { formatRand } from "../lib/pricing";
@@ -91,26 +92,30 @@ export default function ProductDetails({ product, setContents }) {
 
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-14 xl:gap-20">
-      <ProductGallery images={images} title={title} />
+      <RevealOnScroll variant="image">
+        <ProductGallery images={images} title={title} />
+      </RevealOnScroll>
 
       <div className="mt-8 lg:mt-0">
         <div className="lg:sticky lg:top-28">
-          <ProductBuyBox
-            product={product}
-            title={title}
-            savings={savings}
-            options={options}
-            selected={selected}
-            setSelected={setSelected}
-            sizeStockMap={sizeStockMap}
-            hasAllSelections={hasAllSelections}
-            addingToCart={addingToCart}
-            addedToCart={addedToCart}
-            handleAddToCart={handleAddToCart}
-            cartError={cartError}
-            router={router}
-            setContents={setContents}
-          />
+          <RevealOnScroll variant="text" delayMs={120}>
+            <ProductBuyBox
+              product={product}
+              title={title}
+              savings={savings}
+              options={options}
+              selected={selected}
+              setSelected={setSelected}
+              sizeStockMap={sizeStockMap}
+              hasAllSelections={hasAllSelections}
+              addingToCart={addingToCart}
+              addedToCart={addedToCart}
+              handleAddToCart={handleAddToCart}
+              cartError={cartError}
+              router={router}
+              setContents={setContents}
+            />
+          </RevealOnScroll>
         </div>
       </div>
     </div>

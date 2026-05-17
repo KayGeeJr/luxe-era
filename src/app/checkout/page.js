@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import PageHero from "../../components/PageHero";
+import RevealOnScroll from "../../components/RevealOnScroll";
 import { api, getToken } from "../../lib/api";
 import { formatRand } from "../../lib/pricing";
 import brand from "../../../brand.config";
@@ -58,10 +59,11 @@ export default function CheckoutPage() {
         minHeight="40vh"
       />
 
-      <section className="luxe-section">
-        <div className="luxe-container max-w-2xl">
-          {!placed ? (
-            <CheckoutForm
+      <RevealOnScroll variant="text">
+        <section className="luxe-section">
+          <div className="luxe-container max-w-2xl">
+            {!placed ? (
+              <CheckoutForm
               cart={cart}
               subtotal={subtotal}
               shipping={shipping}
@@ -84,8 +86,9 @@ export default function CheckoutPage() {
               orderTotal={orderTotal}
             />
           )}
-        </div>
-      </section>
+          </div>
+        </section>
+      </RevealOnScroll>
     </main>
   );
 }

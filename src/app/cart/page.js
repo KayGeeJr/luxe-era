@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import PageHero from "../../components/PageHero";
+import RevealOnScroll from "../../components/RevealOnScroll";
 import { api } from "../../lib/api";
 import { dispatchCartUpdated } from "../../lib/cartEvents";
 import { formatRand } from "../../lib/pricing";
@@ -71,8 +72,9 @@ export default function CartPage() {
         minHeight="40vh"
       />
 
-      <section className="luxe-section">
-        <div className="luxe-container max-w-3xl">
+      <RevealOnScroll variant="text">
+        <section className="luxe-section">
+          <div className="luxe-container max-w-3xl">
           {loading ? <p className="text-center text-sm text-neutral-500">Loading cart…</p> : null}
           {error ? <p className="text-center text-sm text-red-600">{error}</p> : null}
 
@@ -149,8 +151,9 @@ export default function CartPage() {
               </div>
             </div>
           ) : null}
-        </div>
-      </section>
+          </div>
+        </section>
+      </RevealOnScroll>
     </main>
   );
 }

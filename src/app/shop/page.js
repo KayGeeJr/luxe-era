@@ -106,8 +106,10 @@ function ShopContent() {
         {collection === "sets" && !showEditorialSets ? (
           <section>
             <div className="grid grid-cols-1 gap-8">
-              {sets.map((p) => (
-                <ProductCard key={p.slug} product={p} layout="editorial" badge="Set" />
+              {sets.map((p, i) => (
+                <RevealOnScroll key={p.slug} variant="image" delayMs={i * 80}>
+                  <ProductCard product={p} layout="editorial" badge="Set" />
+                </RevealOnScroll>
               ))}
             </div>
           </section>
@@ -140,13 +142,19 @@ export default function ShopPage() {
     <main className="bg-white">
       <div className="border-b border-neutral-200">
         <div className="mx-auto max-w-shop px-6 py-8 sm:px-10 sm:py-10 lg:px-16 lg:py-12">
-          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Shop" }]} />
-          <h1 className="font-display text-4xl font-light tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
-            Shop
-          </h1>
-          <p className="mt-3 max-w-lg text-sm leading-relaxed text-neutral-600">
-            Hand-cast concrete and resin — objects for scent, surface, and ritual.
-          </p>
+          <RevealOnScroll variant="fade">
+            <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Shop" }]} />
+          </RevealOnScroll>
+          <RevealOnScroll variant="text" delayMs={80}>
+            <h1 className="font-display text-4xl font-light tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
+              Shop
+            </h1>
+          </RevealOnScroll>
+          <RevealOnScroll variant="text" delayMs={140}>
+            <p className="mt-3 max-w-lg text-sm leading-relaxed text-neutral-600">
+              Hand-cast concrete and resin — objects for scent, surface, and ritual.
+            </p>
+          </RevealOnScroll>
         </div>
       </div>
 
