@@ -1,39 +1,43 @@
 import Link from "next/link";
 import ProductCard from "../ProductCard";
 import RevealOnScroll from "../RevealOnScroll";
-import { COLLECTION_LINE, mockProducts } from "../../data/mockCatalog";
+import { mockProducts } from "../../data/mockCatalog";
 
-const sets = mockProducts.filter((p) => p.kind === "set");
+const SET_ORDER = ["luxe-era-signature-set", "halo-luxe-set", "lumi-luxe-set"];
+
+const sets = mockProducts
+  .filter((p) => p.kind === "set" && p.finish === "obsidian")
+  .sort((a, b) => SET_ORDER.indexOf(a.slug) - SET_ORDER.indexOf(b.slug));
 
 export default function HomeFeaturedSets() {
   return (
-    <section id="collections" className="bg-neutral-950 py-20 sm:py-28">
+    <section id="collections" className="bg-white py-16 sm:py-24">
       <div className="mx-auto max-w-shop px-6 sm:px-10 lg:px-16">
         <RevealOnScroll variant="text">
-          <div className="max-w-xl">
-            <p className="luxe-eyebrow text-accent/90">{COLLECTION_LINE}</p>
-            <h2 className="mt-4 font-display text-4xl font-light leading-tight text-white sm:text-5xl lg:text-6xl">
-              Three curated sets.
-              <br />
-              <span className="text-white/50">One complete vignette each.</span>
-            </h2>
-            <p className="mt-5 text-sm leading-relaxed text-white/55 sm:text-base">
-              Bundle pricing on every set — trays, vases, and the Lumi box composed for your space.
+          <div>
+            <h2 className="home-section-heading">Collections</h2>
+            <p className="ref-body mx-auto mt-8 max-w-2xl">
+              Welcome to LuxeEra Home Collections, where timeless design meets artisan craftsmanship.
+              Each piece in our collection—featuring handmade concrete trinket trays, trinket boxes,
+              mini vases, and curated full sets—is thoughtfully crafted to bring understated luxury
+              to your space. Perfect for organizing, decorating, or gifting, our creations combine
+              modern elegance with the durability of handcrafted artistry. Add a touch of
+              sophistication to your home with Luxe Era.
             </p>
           </div>
         </RevealOnScroll>
 
-        <div className="mt-14 flex flex-col gap-6 lg:gap-8">
+        <div className="mt-14 flex flex-col items-stretch gap-10 lg:gap-12">
           {sets.map((set, i) => (
-            <RevealOnScroll key={set.slug} variant="image" delayMs={i * 100}>
+            <RevealOnScroll key={set.slug} variant="image" delayMs={i * 100} className="w-full">
               <ProductCard product={set} layout="editorial" />
             </RevealOnScroll>
           ))}
         </div>
 
         <RevealOnScroll variant="fade" delayMs={200}>
-          <div className="mt-12 text-center">
-            <Link href="/shop?collection=sets" className="btn-accent-outline">
+          <div className="mt-14 text-center">
+            <Link href="/shop?collection=sets" className="btn-outline">
               View all sets
             </Link>
           </div>

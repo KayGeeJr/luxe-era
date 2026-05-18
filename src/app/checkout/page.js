@@ -363,6 +363,7 @@ function OrderConfirmation({ orderNumber, orderTotal }) {
             ["Account Name", EFT_DETAILS.accountName],
             ["Account Number", EFT_DETAILS.accountNumber],
             ["Branch Code", EFT_DETAILS.branchCode],
+            ["Account Type", EFT_DETAILS.accountType],
             ["Reference", orderNumber || EFT_DETAILS.reference],
           ].map(([label, value]) => (
             <div key={label} className="flex justify-between gap-4">

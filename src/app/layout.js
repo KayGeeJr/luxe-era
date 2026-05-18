@@ -4,6 +4,8 @@ import Footer from "../components/Footer";
 import ScrollProgress from "../components/ScrollProgress";
 import PageTransition from "../components/PageTransition";
 import GlobalRevealInit from "../components/GlobalRevealInit";
+import FloatingSocialRail from "../components/FloatingSocialRail";
+import ChatWithUsButton from "../components/ChatWithUsButton";
 import { Cormorant_Garamond, Inter_Tight } from "next/font/google";
 import brand from "../../brand.config";
 
@@ -43,6 +45,8 @@ export default function RootLayout({ children }) {
             <PageTransition>{children}</PageTransition>
           </main>
           <Footer />
+          <FloatingSocialRail />
+          <ChatWithUsButton />
         </div>
       </body>
     </html>

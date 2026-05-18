@@ -5,9 +5,8 @@ import { useSearchParams } from "next/navigation";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import RevealOnScroll from "../../components/RevealOnScroll";
 import ProductCard from "../../components/ProductCard";
-import TrustStrip from "../../components/TrustStrip";
 import PriceListSection from "../../components/PriceListSection";
-import { COLLECTION_LINE, MOCK_COLLECTIONS, listMockProducts, mockProducts } from "../../data/mockCatalog";
+import { MOCK_COLLECTIONS, listMockProducts, mockProducts } from "../../data/mockCatalog";
 
 function ShopContent() {
   const searchParams = useSearchParams();
@@ -128,10 +127,10 @@ function ShopContent() {
 function ShopSetsHeader() {
   return (
     <div>
-      <p className="luxe-eyebrow text-neutral-400">{COLLECTION_LINE} collection</p>
+      <p className="luxe-eyebrow text-neutral-400">Obsidian &amp; Ivory</p>
       <h2 className="mt-2 font-display text-2xl font-light text-neutral-900 sm:text-3xl">Curated sets</h2>
       <p className="mt-2 max-w-xl text-sm text-neutral-500">
-        Bundle pricing — everything you need for a finished vignette, in one order.
+        Bundle pricing in two finishes — everything you need for a finished vignette, in one order.
       </p>
     </div>
   );
@@ -157,8 +156,6 @@ export default function ShopPage() {
           </RevealOnScroll>
         </div>
       </div>
-
-      <TrustStrip />
 
       <Suspense fallback={<div className="py-20 text-center text-sm text-neutral-500">Loading…</div>}>
         <ShopContent />

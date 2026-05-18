@@ -104,6 +104,66 @@ html {
 }
 
 @layer components {
+  .ref-section {
+    @apply bg-white;
+  }
+
+  .ref-kicker {
+    @apply text-[11px] font-normal tracking-[0.35em] uppercase text-neutral-900;
+  }
+
+  .ref-heading {
+    @apply text-center text-[11px] font-normal tracking-[0.35em] uppercase text-neutral-900;
+  }
+
+  .home-section-heading {
+    @apply text-center text-2xl font-bold tracking-[0.12em] uppercase text-neutral-900 sm:text-3xl;
+  }
+
+  .ref-body {
+    @apply text-center text-sm font-light leading-[1.9] text-neutral-700 sm:text-[15px];
+  }
+
+  .btn-chat-us {
+    @apply fixed bottom-5 right-5 z-50 inline-flex min-h-[44px] items-center justify-center bg-neutral-950 px-5 py-3 text-[10px] font-medium tracking-[0.22em] uppercase text-white shadow-lg transition hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2;
+  }
+
+  /* Hero: always span full width; crop top/bottom inside fixed-height frame */
+  .hero-media-frame {
+    @apply relative w-full overflow-hidden bg-[#f6f4f1];
+  }
+
+  .hero-media-ambient {
+    @apply pointer-events-none absolute inset-0 h-full w-full scale-[1.15] object-cover object-center opacity-90 blur-2xl saturate-[0.92];
+  }
+
+  .hero-media-sharp {
+    @apply pointer-events-none absolute left-0 right-0 top-1/2 z-[1] w-full max-w-none -translate-y-1/2;
+    height: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-media-frame--desktop {
+      height: auto;
+      aspect-ratio: 3 / 2;
+      max-height: min(92vh, 1000px);
+    }
+
+    .hero-media-sharp {
+      inset: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      transform: none;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hero-media-ambient {
+      display: none;
+    }
+  }
+
   .luxe-eyebrow {
     @apply text-[10px] tracking-[0.3em] uppercase text-accent;
   }

@@ -11,7 +11,11 @@ export default function ProductCard({ product, badge, layout = "grid" }) {
   const primary = images[0] || "/images/placeholder.svg";
   const hover = images[1] || primary;
   const title = product.title || product.name;
-  const showBadge = badge || (product.kind === "set" ? "Set" : null);
+  const finishLabel = product.finish
+    ? `${product.finish.charAt(0).toUpperCase()}${product.finish.slice(1)}`
+    : null;
+  const showBadge =
+    badge || (product.kind === "set" && finishLabel ? `${finishLabel} Set` : product.kind === "set" ? "Set" : null);
   const [imgSrc, setImgSrc] = useState(primary);
 
   if (layout === "editorial") {
@@ -86,11 +90,8 @@ function ProductCardInfo({ title, price }) {
 
 function EditorialCard({ product, title, showBadge, primary }) {
   return (
-    <Link
-      href={`/product/${product.slug}`}
-      className="group grid grid-cols-1 overflow-hidden border border-white/10 bg-white md:grid-cols-2"
-    >
-      <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[420px]">
+    <Link href={`/product/${product.slug}`} className="group block w-full">
+      <div className="relative mx-auto w-full max-w-5xl aspect-[4/3] overflow-hidden bg-[#f0f0f0]">
         {showBadge ? (
           <span className="absolute left-4 top-4 z-10 bg-white px-3 py-1 text-[10px] tracking-[0.14em] uppercase">
             {showBadge}
@@ -100,7 +101,7 @@ function EditorialCard({ product, title, showBadge, primary }) {
         <img
           src={primary}
           alt={title}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
         />
       </div>
       <EditorialCardBody product={product} title={title} />
@@ -110,17 +111,12 @@ function EditorialCard({ product, title, showBadge, primary }) {
 
 function EditorialCardBody({ product, title }) {
   return (
-    <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
-      <p className="luxe-eyebrow text-neutral-400">Curated set</p>
-      <h3 className="mt-3 font-display text-3xl font-light text-neutral-900 md:text-4xl">{title}</h3>
-      <p className="mt-3 max-w-sm text-sm leading-relaxed text-neutral-600 line-clamp-3">
+    <div className="px-2 py-8 text-center sm:py-10">
+      <h3 className="text-sm font-normal tracking-wide text-neutral-900 sm:text-base">{title}</h3>
+      <p className="mt-2 text-sm text-neutral-600">{formatRand(product.price)}</p>
+      <p className="mx-auto mt-4 max-w-lg text-sm font-light leading-relaxed text-neutral-500 line-clamp-2">
         {product.description}
       </p>
-      <p className="mt-6 text-lg text-neutral-900">{formatRand(product.price)}</p>
-      <span className="mt-6 inline-flex items-center gap-2 text-[11px] tracking-[0.18em] uppercase text-accent">
-        View set
-        <span aria-hidden="true">→</span>
-      </span>
     </div>
   );
 }

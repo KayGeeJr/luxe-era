@@ -47,12 +47,11 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const isHome = pathname === "/";
   const onDarkHero = DARK_HERO_PATHS.includes(pathname);
   const atTop = !scrolled;
 
-  const darkTransparent = (isHome && atTop) || (onDarkHero && atTop);
-  const lightMode = !darkTransparent && (isHome ? scrolled : !onDarkHero || scrolled);
+  const darkTransparent = onDarkHero && atTop;
+  const lightMode = !darkTransparent;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);

@@ -42,6 +42,17 @@ function ContactGrid({ status, setStatus, brand }) {
         </p>
         <ul className="mt-8 space-y-4 text-sm">
           <li>
+            <span className="luxe-eyebrow text-neutral-400 block mb-1">WhatsApp</span>
+            <a
+              href={brand.chatUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-neutral-800 hover:text-accent transition-colors"
+            >
+              {brand.contact.phoneDisplay || brand.contact.phone}
+            </a>
+          </li>
+          <li>
             <span className="luxe-eyebrow text-neutral-400 block mb-1">Phone</span>
             <a href={`tel:${brand.contact.phone.replace(/\s/g, "")}`} className="text-neutral-800 hover:text-accent transition-colors">
               {brand.contact.phone}

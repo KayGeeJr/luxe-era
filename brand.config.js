@@ -3,45 +3,45 @@
  */
 
 const brand = {
-  // Store identity
   storeName: "Luxe Era",
-  tagline: "Sculpted by hand. Cast in concrete. Made to be lived with.",
+  tagline: "Handcrafted. Minimal. Timeless.",
   domain: "luxeera.co.za",
   country: "South Africa",
+  foundedYear: 2023,
 
-  // Logo — place logo at /public/images/logo.png
   logo: "/images/logo.jpg",
 
-  // Contact details
   contact: {
-    phone: "+27 00 000 0000",
+    phone: "+27 81 774 5524",
+    phoneDisplay: "081 774 5524",
     email: "hello@luxeera.co.za",
+    whatsapp: "27817745524",
   },
 
-  // Social links
   social: [
     { href: "https://www.instagram.com/luxeera.homecollections/", label: "Instagram", icon: "instagram" },
     { href: "https://www.tiktok.com/@luxeera.homecollections?lang=en", label: "TikTok", icon: "tiktok" },
   ],
 
-  // Currency
+  chatUrl: "https://wa.me/27817745524",
+
   currency: "ZAR",
   currencySymbol: "R",
 
-  // Shipping (in cents — 80000 = R800, 12000 = R120)
   freeShippingAboveZar: 80000,
   shippingFeeZar: 12000,
 
-  // EFT banking details — fill in before going live
+  orderLeadTime: "3–5 working days",
+
   eft: {
-    bank: "Bank Name",
-    accountName: "Luxe Era",
-    accountNumber: "000000000",
-    branchCode: "000000",
+    bank: "Standard Bank",
+    accountName: "Miss Mmina Mr Motshegwana",
+    accountNumber: "10138475340",
+    branchCode: "8305",
+    accountType: "Current",
     reference: "Your order number",
   },
 
-  // Navigation links shown in Header and Footer
   nav: [
     { href: "/about", label: "About" },
     { href: "/shop", label: "Shop" },

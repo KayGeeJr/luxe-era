@@ -8,7 +8,7 @@ import RevealOnScroll from "./RevealOnScroll";
 import VariantSelector from "./VariantSelector";
 import { api } from "../lib/api";
 import { formatRand } from "../lib/pricing";
-import { getSetSavings } from "../data/mockCatalog";
+import { getProductFinishLabel, getProductIdealFor, getSetSavings } from "../data/mockCatalog";
 import { dispatchCartUpdated } from "../lib/cartEvents";
 import brand from "../../brand.config";
 
@@ -21,8 +21,6 @@ function toLegacyOptions(variants = []) {
   if (colours.length) options.push({ name: "colour", values: colours });
   return options;
 }
-
-const freeShippingLabel = `Free delivery on orders over R${brand.freeShippingAboveZar / 100}`;
 
 export default function ProductDetails({ product, setContents }) {
   const router = useRouter();
@@ -178,9 +176,15 @@ function ProductBuyBoxInner(props) {
     setContents,
   } = props;
 
+  const idealFor = getProductIdealFor(product);
+
   return (
     <>
-      {product.kind === "set" ? (
+      {product.finish ? (
+        <p className="text-[11px] font-medium tracking-[0.14em] uppercase text-accent">
+          {getProductFinishLabel(product)} {product.kind === "set" ? "set" : "piece"}
+        </p>
+      ) : product.kind === "set" ? (
         <p className="text-[11px] font-medium tracking-[0.14em] uppercase text-accent">Curated set</p>
       ) : product.tags?.[0] ? (
         <p className="text-[11px] tracking-[0.14em] uppercase text-neutral-400">{product.tags[0]}</p>
@@ -199,6 +203,19 @@ function ProductBuyBoxInner(props) {
 
       {product.description ? (
         <p className="mt-5 text-sm leading-relaxed text-neutral-600">{product.description}</p>
+      ) : null}
+
+      {idealFor.length > 0 ? (
+        <div className="mt-5">
+          <p className="text-[11px] font-medium tracking-[0.14em] uppercase text-neutral-900">
+            Ideal for
+          </p>
+          <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-neutral-600">
+            {idealFor.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
       ) : null}
 
       {options.length > 0 ? (
@@ -249,8 +266,6 @@ function ProductBuyBoxInner(props) {
         </Link>
       </div>
 
-      <p className="mt-4 text-xs text-neutral-500">{freeShippingLabel}</p>
-
       <ProductAccordions setContents={setContents} product={product} />
     </>
   );
@@ -294,8 +309,8 @@ function ProductAccordions({ setContents, product }) {
           <span className="text-neutral-400 transition group-open:rotate-45">+</span>
         </summary>
         <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-          {freeShippingLabel}. We ship across South Africa; dispatch within 3–5 business days after
-          payment. Custom pieces may require additional lead time.
+          We ship across South Africa; dispatch within {brand.orderLeadTime} after payment. Custom
+          pieces may require additional lead time.
         </p>
       </details>
     </div>

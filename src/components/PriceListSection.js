@@ -1,4 +1,4 @@
-import { PRICE_LIST_IMAGE, COLLECTION_LINE } from "../data/mockCatalog";
+import { PRICE_LIST_IMAGE } from "../data/mockCatalog";
 
 export default function PriceListSection() {
   return (
@@ -6,7 +6,7 @@ export default function PriceListSection() {
       <details className="group">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-2">
           <div>
-            <p className="luxe-eyebrow text-neutral-400">{COLLECTION_LINE} collection</p>
+            <p className="luxe-eyebrow text-neutral-400">Obsidian &amp; Ivory</p>
             <h2 className="mt-2 font-display text-xl font-light text-neutral-900 sm:text-2xl">
               View official price list
             </h2>
