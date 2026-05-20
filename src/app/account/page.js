@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import PageHero from "../../components/PageHero";
+import PageHeader from "../../components/PageHeader";
 import { api, getSessionId, getToken, removeToken, setToken } from "../../lib/api";
 import LogoLoader from "../../components/LogoLoader";
 
@@ -112,7 +112,12 @@ export default function AccountPage() {
   if (!user) {
     return (
       <main className="bg-white">
-        <PageHero eyebrow="Account" title="Sign in or" titleAccent="register" minHeight="38vh" />
+        <PageHeader
+          eyebrow="Account"
+          title="Sign in or"
+          titleAccent="register"
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Account" }]}
+        />
         <section className="luxe-section">
           <AccountGuestForms
             loginData={loginData}
@@ -131,7 +136,12 @@ export default function AccountPage() {
 
   return (
     <main className="bg-white">
-      <PageHero eyebrow="Account" title="My" titleAccent="profile" minHeight="38vh" />
+      <PageHeader
+        eyebrow="Account"
+        title="My"
+        titleAccent="profile"
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Account" }]}
+      />
       <section className="luxe-section">
         <div className="luxe-container">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

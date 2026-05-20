@@ -1,23 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { getSetHomeBlurb } from "../data/mockCatalog";
 import { formatRand } from "../lib/pricing";
 
-export default function ProductCard({ product, badge, layout = "grid" }) {
+export default function ProductCard({ product, badge, layout = "grid", priceHoverCta }) {
   const images = (product.images || []).map((img) =>
     typeof img === "string" ? img : img?.url,
   ).filter(Boolean);
   const primary = images[0] || "/images/placeholder.svg";
-  const hover = images[1] || primary;
   const title = product.title || product.name;
   const finishLabel = product.finish
     ? `${product.finish.charAt(0).toUpperCase()}${product.finish.slice(1)}`
     : null;
   const showBadge =
     badge || (product.kind === "set" && finishLabel ? `${finishLabel} Set` : product.kind === "set" ? "Set" : null);
-  const [imgSrc, setImgSrc] = useState(primary);
 
   if (layout === "editorial") {
     return (
@@ -33,40 +30,16 @@ export default function ProductCard({ product, badge, layout = "grid" }) {
   return (
     <article className="group luxe-hover-lift">
       <Link href={`/product/${product.slug}`} className="block">
-        <ProductCardImage
-          title={title}
-          primary={primary}
-          hover={hover}
-          imgSrc={imgSrc}
-          setImgSrc={setImgSrc}
-          showBadge={showBadge}
-        />
-        <ProductCardInfo title={title} price={product.price} />
+        <ProductCardImage title={title} primary={primary} showBadge={showBadge} />
+        <ProductCardInfo title={title} price={product.price} hoverCta={priceHoverCta} />
       </Link>
     </article>
   );
 }
 
-function ProductCardImage({ title, primary, hover, imgSrc, setImgSrc, showBadge }) {
+function ProductCardImage({ title, primary, showBadge }) {
   return (
-    <ProductCardImageRoot
-      title={title}
-      primary={primary}
-      hover={hover}
-      imgSrc={imgSrc}
-      setImgSrc={setImgSrc}
-      showBadge={showBadge}
-    />
-  );
-}
-
-function ProductCardImageRoot({ title, primary, hover, imgSrc, setImgSrc, showBadge }) {
-  return (
-    <div
-      className="relative aspect-[3/4] overflow-hidden bg-[#f4f2ef]"
-      onMouseEnter={() => setImgSrc(hover)}
-      onMouseLeave={() => setImgSrc(primary)}
-    >
+    <div className="relative aspect-[3/4] overflow-hidden bg-[#f4f2ef]">
       {showBadge ? (
         <span className="absolute left-3 top-3 z-10 bg-white/95 px-2.5 py-1 text-[10px] font-medium tracking-[0.14em] uppercase text-neutral-900">
           {showBadge}
@@ -74,7 +47,7 @@ function ProductCardImageRoot({ title, primary, hover, imgSrc, setImgSrc, showBa
       ) : null}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={imgSrc}
+        src={primary}
         alt={title}
         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
       />
@@ -87,11 +60,22 @@ function ProductCardImageRoot({ title, primary, hover, imgSrc, setImgSrc, showBa
   );
 }
 
-function ProductCardInfo({ title, price }) {
+function ProductCardInfo({ title, price, hoverCta }) {
   return (
     <div className="pt-4">
       <h3 className="text-sm font-normal text-neutral-900 line-clamp-2">{title}</h3>
-      <p className="mt-1.5 text-sm text-neutral-600">{formatRand(price)}</p>
+      {hoverCta ? (
+        <div className="relative mt-1.5 h-5 overflow-hidden" aria-label={`${formatRand(price)} — ${hoverCta}`}>
+          <div className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform group-hover:-translate-y-1/2">
+            <span className="flex h-5 items-center text-sm text-neutral-600">{formatRand(price)}</span>
+            <span className="flex h-5 items-center text-[11px] font-medium tracking-[0.2em] uppercase text-neutral-900">
+              {hoverCta}
+            </span>
+          </div>
+        </div>
+      ) : (
+        <p className="mt-1.5 text-sm text-neutral-600">{formatRand(price)}</p>
+      )}
     </div>
   );
 }

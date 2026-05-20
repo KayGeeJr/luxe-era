@@ -6,16 +6,15 @@
 export const PRICE_LIST_IMAGE = "/images/price-list.png";
 export const COLLECTION_LINES = ["Obsidian", "Ivory"];
 
-export const MOCK_COLLECTIONS = [
+/** Shop page filter tabs */
+export const SHOP_FILTERS = [
   { slug: "all", label: "All" },
   { slug: "sets", label: "Sets" },
-  { slug: "obsidian", label: "Obsidian" },
-  { slug: "ivory", label: "Ivory" },
-  { slug: "signature", label: "Signature" },
-  { slug: "halo", label: "Halo" },
-  { slug: "lumi", label: "Lumi" },
-  { slug: "pieces", label: "Individual pieces" },
+  { slug: "pieces", label: "Individual Pieces" },
 ];
+
+/** @deprecated use SHOP_FILTERS on the shop page */
+export const MOCK_COLLECTIONS = SHOP_FILTERS;
 
 /** @deprecated use product.finish */
 export const COLLECTION_LINE = "Obsidian";
@@ -473,6 +472,44 @@ export const SET_HOME_BLURBS = {
 
 export function getSetHomeBlurb(product) {
   return SET_HOME_BLURBS[product?.slug] || product?.description || "";
+}
+
+/** Canonical Obsidian set order (homepage + shop "All"). */
+export const OBSIDIAN_SET_SLUGS = [
+  "luxe-era-signature-set",
+  "halo-luxe-set",
+  "lumi-luxe-set",
+];
+
+function setCatalogSortIndex(slug) {
+  const base = slug.replace(/-ivory$/, "");
+  const idx = OBSIDIAN_SET_SLUGS.indexOf(base);
+  return idx === -1 ? 999 : idx;
+}
+
+export function sortSetsByCatalogOrder(sets) {
+  return [...sets].sort((a, b) => setCatalogSortIndex(a.slug) - setCatalogSortIndex(b.slug));
+}
+
+/** Editorial set rows for shop/home — avoids duplicate Obsidian + Ivory on "All". */
+export function getEditorialSetsForCollection(products, collection) {
+  if (collection === "pieces") return [];
+
+  let sets = products.filter((p) => p.kind === "set");
+  if (collection === "all") {
+    sets = sets.filter((p) => p.finish === "obsidian");
+  }
+
+  return sortSetsByCatalogOrder(sets);
+}
+
+/** Individual pieces for shop/home — Obsidian line on All & Pieces tabs */
+export function getShopPieces(products, collection) {
+  let pieces = products.filter((p) => p.kind === "piece");
+  if (collection === "all" || collection === "pieces") {
+    pieces = pieces.filter((p) => p.finish === "obsidian");
+  }
+  return pieces;
 }
 
 export function getProductIdealFor(product) {

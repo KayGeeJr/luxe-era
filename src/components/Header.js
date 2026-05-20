@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { socialLinks } from "../data/socialLinks";
 import { InstagramIcon, TikTokIcon } from "./SocialIcons";
@@ -9,8 +8,6 @@ import brand from "../../brand.config";
 import CartLink from "./CartLink";
 
 const headerSocialIcons = { instagram: InstagramIcon, tiktok: TikTokIcon };
-const DARK_HERO_PATHS = ["/about", "/shop", "/contact", "/custom-orders"];
-
 function HeaderSocialRow({ className = "", dark }) {
   const btnClass = dark
     ? "border-neutral-200 text-neutral-700 hover:bg-neutral-100"
@@ -42,23 +39,8 @@ function HeaderSocialRow({ className = "", dark }) {
 }
 
 export default function Header() {
-  const pathname = usePathname();
   const [query, setQuery] = useState("");
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const onDarkHero = DARK_HERO_PATHS.includes(pathname);
-  const atTop = !scrolled;
-
-  const darkTransparent = onDarkHero && atTop;
-  const lightMode = !darkTransparent;
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [pathname]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -77,27 +59,14 @@ export default function Header() {
   const nav = useMemo(() => brand.nav, []);
   const closeMenu = () => setMenuOpen(false);
 
-  const headerClass = lightMode
-    ? "border-b border-neutral-200/80 bg-[#faf8f5]/90 backdrop-blur-md"
-    : darkTransparent
-      ? "border-b border-transparent bg-transparent"
-      : "border-b border-white/10 bg-neutral-950/95 backdrop-blur-md";
-
-  const navLinkClass = lightMode
-    ? "text-[11px] tracking-[0.14em] uppercase text-neutral-600 hover:text-neutral-900 transition-colors"
-    : "text-[11px] tracking-[0.14em] uppercase text-white/80 hover:text-white transition-colors";
-
-  const iconBtnClass = lightMode
-    ? "border-neutral-200 text-neutral-800 hover:bg-neutral-100"
-    : "border-white/20 bg-white/5 text-white hover:bg-white/15";
-
-  const logoClass = lightMode ? "h-9 w-auto" : "h-9 w-auto brightness-0 invert";
-
-  const searchClass = lightMode
-    ? "w-36 bg-transparent text-sm text-neutral-800 placeholder:text-neutral-400 outline-none"
-    : "w-36 bg-transparent text-sm text-white placeholder:text-white/40 outline-none";
-
-  const searchBorder = lightMode ? "border-neutral-200" : "border-white/15";
+  const headerClass = "border-b border-neutral-200/80 bg-[#faf8f5]/90 backdrop-blur-md";
+  const navLinkClass =
+    "text-[11px] tracking-[0.14em] uppercase text-neutral-600 hover:text-neutral-900 transition-colors";
+  const iconBtnClass = "border-neutral-200 text-neutral-800 hover:bg-neutral-100";
+  const logoClass = "h-9 w-auto";
+  const searchClass =
+    "w-36 bg-transparent text-sm text-neutral-800 placeholder:text-neutral-400 outline-none";
+  const searchBorder = "border-neutral-200";
 
   return (
     <header

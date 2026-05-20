@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import PageHero from "../../components/PageHero";
+import PageHeader from "../../components/PageHeader";
 import RevealOnScroll from "../../components/RevealOnScroll";
 import brand from "../../../brand.config";
 
@@ -10,13 +10,12 @@ export default function ContactPage() {
 
   return (
     <main className="bg-white">
-      <PageHero
+      <PageHeader
         eyebrow="Contact"
         title="Let's"
         titleAccent="connect"
-        image="/images/collections/halo/halo-1.jpg"
-        imageAlt="Contact Luxe Era"
-        minHeight="45vh"
+        description="Questions about an order, a collection, or a custom piece — we're here to help."
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
       />
 
       <section className="luxe-section">

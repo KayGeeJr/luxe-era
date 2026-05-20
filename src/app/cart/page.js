@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import PageHero from "../../components/PageHero";
+import PageHeader from "../../components/PageHeader";
 import RevealOnScroll from "../../components/RevealOnScroll";
 import { api } from "../../lib/api";
 import { dispatchCartUpdated } from "../../lib/cartEvents";
@@ -63,13 +63,11 @@ export default function CartPage() {
 
   return (
     <main className="bg-white">
-      <PageHero
+      <PageHeader
         eyebrow="Cart"
         title="Your"
         titleAccent="selection"
-        image="/images/collections/signature/sig-1.jpg"
-        imageAlt="Shopping cart"
-        minHeight="40vh"
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Cart" }]}
       />
 
       <RevealOnScroll variant="text">

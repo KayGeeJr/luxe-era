@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import PageHero from "../../components/PageHero";
+import PageHeader from "../../components/PageHeader";
 import RevealOnScroll from "../../components/RevealOnScroll";
 import ImageReveal from "../../components/ImageReveal";
 
@@ -17,13 +17,12 @@ export default function CustomOrdersPage() {
 
   return (
     <main className="bg-white">
-      <PageHero
+      <PageHeader
         eyebrow="Bespoke"
         title="Made only"
         titleAccent="for you"
-        image="/images/collections/halo/halo-4.jpg"
-        imageAlt="Luxe Era custom orders"
-        minHeight="50vh"
+        description="Collaborate on finish, form, and fragrance for a one-of-one Luxe Era piece."
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Custom orders" }]}
       />
 
       <section className="luxe-section border-b border-neutral-100">

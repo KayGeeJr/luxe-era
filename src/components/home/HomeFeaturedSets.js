@@ -1,13 +1,9 @@
 import Link from "next/link";
 import ProductCard from "../ProductCard";
 import RevealOnScroll from "../RevealOnScroll";
-import { mockProducts } from "../../data/mockCatalog";
+import { getEditorialSetsForCollection, mockProducts } from "../../data/mockCatalog";
 
-const SET_ORDER = ["luxe-era-signature-set", "halo-luxe-set", "lumi-luxe-set"];
-
-const sets = mockProducts
-  .filter((p) => p.kind === "set" && p.finish === "obsidian")
-  .sort((a, b) => SET_ORDER.indexOf(a.slug) - SET_ORDER.indexOf(b.slug));
+const sets = getEditorialSetsForCollection(mockProducts, "all");
 
 export default function HomeFeaturedSets() {
   return (

@@ -2,15 +2,39 @@
 
 import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Breadcrumbs from "../../components/Breadcrumbs";
+import PageHeader from "../../components/PageHeader";
 import RevealOnScroll from "../../components/RevealOnScroll";
 import ProductCard from "../../components/ProductCard";
 import PriceListSection from "../../components/PriceListSection";
-import { MOCK_COLLECTIONS, listMockProducts, mockProducts } from "../../data/mockCatalog";
+import {
+  SHOP_FILTERS,
+  getEditorialSetsForCollection,
+  getShopPieces,
+  listMockProducts,
+} from "../../data/mockCatalog";
+
+const VALID_COLLECTIONS = new Set(SHOP_FILTERS.map((c) => c.slug));
+
+function normalizeCollection(slug) {
+  return VALID_COLLECTIONS.has(slug) ? slug : "all";
+}
+
+function ShopSectionTitle({ children, count }) {
+  return (
+    <div className="mb-6 flex flex-wrap items-baseline justify-between gap-2 border-b border-neutral-200 pb-4">
+      <h2 className="font-display text-xl font-light text-neutral-900 sm:text-2xl">{children}</h2>
+      {count != null ? (
+        <span className="text-xs text-neutral-500">
+          {count} {count === 1 ? "item" : "items"}
+        </span>
+      ) : null}
+    </div>
+  );
+}
 
 function ShopContent() {
   const searchParams = useSearchParams();
-  const initialCollection = searchParams.get("collection") || "all";
+  const initialCollection = normalizeCollection(searchParams.get("collection") || "all");
 
   const [sort, setSort] = useState("newest");
   const [collection, setCollection] = useState(initialCollection);
@@ -20,22 +44,26 @@ function ShopContent() {
     [sort, collection],
   );
 
-  const sets = products.filter((p) => p.kind === "set");
-  const pieces = products.filter((p) => p.kind === "piece");
-  const showEditorialSets = collection === "all";
-  const allSets = mockProducts.filter((p) => p.kind === "set");
+  const sets = useMemo(
+    () => getEditorialSetsForCollection(products, collection),
+    [products, collection],
+  );
+
+  const pieces = useMemo(() => getShopPieces(products, collection), [products, collection]);
+  const showSets = sets.length > 0;
+  const showPieces = pieces.length > 0 && collection !== "sets";
 
   return (
     <>
-      <div className="sticky top-[57px] z-40 border-b border-neutral-200 bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/80">
+      <div className="sticky top-[57px] z-40 border-b border-neutral-200 bg-[#faf8f5]/95 backdrop-blur-md supports-[backdrop-filter]:bg-[#faf8f5]/80">
         <div className="mx-auto max-w-shop px-6 py-4 sm:px-10 lg:px-16">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-neutral-500">
               {products.length} {products.length === 1 ? "product" : "products"}
             </p>
-            <div className="flex items-center gap-4">
-              <div className="flex flex-wrap gap-1.5 overflow-x-auto no-scrollbar">
-                {MOCK_COLLECTIONS.map((c) => {
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap gap-1.5">
+                {SHOP_FILTERS.map((c) => {
                   const active = collection === c.slug;
                   return (
                     <button
@@ -70,44 +98,28 @@ function ShopContent() {
       </div>
 
       <div className="mx-auto max-w-shop px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
-        {showEditorialSets ? (
-          <section className="mb-16 flex flex-col gap-8 sm:gap-10 lg:gap-12">
-            <ShopSetsHeader />
-            {allSets.map((set, i) => (
-              <RevealOnScroll key={set.slug} delayMs={i * 80}>
-                <ProductCard product={set} layout="editorial" badge="Set" />
-              </RevealOnScroll>
-            ))}
-          </section>
-        ) : null}
-
-        {collection !== "sets" && pieces.length > 0 ? (
-          <section className={showEditorialSets ? "mt-4" : ""}>
-            {!showEditorialSets || collection === "pieces" ? (
-              <h2 className="mb-8 font-display text-2xl font-light text-neutral-900">
-                {collection === "pieces" ? "All pieces" : "Shop individual pieces"}
-              </h2>
-            ) : (
-              <h2 className="mb-8 font-display text-2xl font-light text-neutral-900">
-                Individual pieces
-              </h2>
-            )}
-            <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
-              {(showEditorialSets ? pieces : products).map((p, i) => (
-                <RevealOnScroll key={p.slug} delayMs={(i % 8) * 60}>
-                  <ProductCard product={p} />
+        {showSets ? (
+          <section className={showPieces ? "mb-14" : ""}>
+            <ShopSectionTitle count={sets.length}>
+              {collection === "sets" ? "All sets" : "Sets"}
+            </ShopSectionTitle>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:gap-10">
+              {sets.map((set, i) => (
+                <RevealOnScroll key={set.slug} delayMs={i * 50}>
+                  <ProductCard product={set} badge="Set" priceHoverCta="Shop Now" />
                 </RevealOnScroll>
               ))}
             </div>
           </section>
         ) : null}
 
-        {collection === "sets" && !showEditorialSets ? (
+        {showPieces ? (
           <section>
-            <div className="flex flex-col gap-8 sm:gap-10 lg:gap-12">
-              {sets.map((p, i) => (
-                <RevealOnScroll key={p.slug} variant="image" delayMs={i * 80}>
-                  <ProductCard product={p} layout="editorial" badge="Set" />
+            <ShopSectionTitle count={pieces.length}>Individual pieces</ShopSectionTitle>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+              {pieces.map((p, i) => (
+                <RevealOnScroll key={p.slug} delayMs={(i % 8) * 40}>
+                  <ProductCard product={p} priceHoverCta="Shop Now" />
                 </RevealOnScroll>
               ))}
             </div>
@@ -124,38 +136,15 @@ function ShopContent() {
   );
 }
 
-function ShopSetsHeader() {
-  return (
-    <div>
-      <p className="luxe-eyebrow text-neutral-400">Obsidian &amp; Ivory</p>
-      <h2 className="mt-2 font-display text-2xl font-light text-neutral-900 sm:text-3xl">Curated sets</h2>
-      <p className="mt-2 max-w-xl text-sm text-neutral-500">
-        Bundle pricing in two finishes — everything you need for a finished vignette, in one order.
-      </p>
-    </div>
-  );
-}
-
 export default function ShopPage() {
   return (
     <main className="bg-white">
-      <div className="border-b border-neutral-200">
-        <div className="mx-auto max-w-shop px-6 py-8 sm:px-10 sm:py-10 lg:px-16 lg:py-12">
-          <RevealOnScroll variant="fade">
-            <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Shop" }]} />
-          </RevealOnScroll>
-          <RevealOnScroll variant="text" delayMs={80}>
-            <h1 className="font-display text-4xl font-light tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
-              Shop
-            </h1>
-          </RevealOnScroll>
-          <RevealOnScroll variant="text" delayMs={140}>
-            <p className="mt-3 max-w-lg text-sm leading-relaxed text-neutral-600">
-              Hand-cast concrete and resin — objects for scent, surface, and ritual.
-            </p>
-          </RevealOnScroll>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Browse"
+        title="Shop"
+        description="Curated sets and individual pieces — Obsidian and Ivory finishes."
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Shop" }]}
+      />
 
       <Suspense fallback={<div className="py-20 text-center text-sm text-neutral-500">Loading…</div>}>
         <ShopContent />

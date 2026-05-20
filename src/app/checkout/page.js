@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import PageHero from "../../components/PageHero";
+import PageHeader from "../../components/PageHeader";
 import RevealOnScroll from "../../components/RevealOnScroll";
 import { api, getToken } from "../../lib/api";
 import { formatRand } from "../../lib/pricing";
@@ -50,13 +50,11 @@ export default function CheckoutPage() {
 
   return (
     <main className="bg-white">
-      <PageHero
+      <PageHeader
         eyebrow="Checkout"
         title={placed ? "Order" : "Complete"}
         titleAccent={placed ? "confirmed" : "your order"}
-        image="/images/collections/signature/sig-2.jpg"
-        imageAlt="Checkout"
-        minHeight="40vh"
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Cart", href: "/cart" }, { label: "Checkout" }]}
       />
 
       <RevealOnScroll variant="text">

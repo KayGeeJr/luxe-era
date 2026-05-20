@@ -1,5 +1,5 @@
 import Link from "next/link";
-import PageHero from "../../components/PageHero";
+import PageHeader from "../../components/PageHeader";
 import RevealOnScroll from "../../components/RevealOnScroll";
 import brand from "../../../brand.config";
 
@@ -40,13 +40,12 @@ const ORDER_STEPS = [
 export default function AboutPage() {
   return (
     <main className="bg-white">
-      <PageHero
+      <PageHeader
         eyebrow="Introduction"
         title="Handcrafted."
         titleAccent="Minimal. Timeless."
-        image="/images/collections/luxe-era-signature-set/luxe-era-signature-set-01.jpeg"
-        imageAlt="Luxe Era Home Collections"
-        minHeight="55vh"
+        description="A handcrafted décor brand — timeless pieces made with intention in South Africa."
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
       />
 
       <section className="py-16 sm:py-24">
@@ -98,16 +97,16 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-neutral-950 py-16 sm:py-24">
+      <section className="bg-[#f7f7f7] py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 sm:px-10 md:px-16">
           <RevealOnScroll>
             <p className="text-center text-[10px] tracking-[0.28em] uppercase text-accent">
               What drives us
             </p>
-            <h2 className="mt-3 text-center text-2xl font-light tracking-tight text-white sm:text-3xl">
+            <h2 className="mt-3 text-center text-2xl font-light tracking-tight text-neutral-900 sm:text-3xl">
               Quality. Detail. Consistency.
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-neutral-400">
+            <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-neutral-600">
               Every LuxeEra piece is made to feel substantial, finished with care, and produced
               with the same standard of refinement — whether a single vase or a complete set.
             </p>
@@ -131,7 +130,7 @@ export default function AboutPage() {
               <RevealOnScroll key={v.label}>
                 <div className="border-t border-accent/30 pt-6">
                   <p className="mb-4 text-[10px] tracking-[0.25em] uppercase text-accent">{v.label}</p>
-                  <p className="text-sm leading-relaxed text-neutral-400">{v.body}</p>
+                  <p className="text-sm leading-relaxed text-neutral-600">{v.body}</p>
                 </div>
               </RevealOnScroll>
             ))}
@@ -294,14 +293,14 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-neutral-950 py-16 sm:py-24">
+      <section className="bg-[#f7f7f7] py-16 sm:py-24">
         <div className="mx-auto max-w-3xl px-6 text-center sm:px-10">
           <RevealOnScroll>
             <p className="text-[10px] tracking-[0.3em] uppercase text-accent">Bespoke</p>
-            <h2 className="mt-4 text-3xl font-extralight leading-snug tracking-wide text-white sm:text-4xl">
+            <h2 className="mt-4 font-display text-3xl font-light leading-snug tracking-wide text-neutral-900 sm:text-4xl">
               Something made only for you.
             </h2>
-            <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-neutral-400 sm:text-base">
+            <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-neutral-600 sm:text-base">
               For a piece outside our catalogue, start a custom enquiry — we&apos;ll collaborate on
               finish, form, and fragrance for a one-of-one object.
             </p>

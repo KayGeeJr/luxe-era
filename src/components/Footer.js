@@ -7,7 +7,7 @@ const socialIcons = { instagram: InstagramIcon, tiktok: TikTokIcon };
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-neutral-950 text-white">
+    <footer className="border-t border-neutral-200 bg-[#faf8f5] text-neutral-900">
       <FooterContainer />
     </footer>
   );
@@ -44,9 +44,9 @@ function FooterBrand() {
       <img
         src={brand.logo}
         alt={brand.storeName}
-        className="h-10 w-auto brightness-0 invert opacity-90"
+        className="h-10 w-auto"
       />
-      <p className="mt-4 text-sm leading-relaxed text-white/50">
+      <p className="mt-4 text-sm leading-relaxed text-neutral-600">
         Handcrafted home collections. Concrete and resin — made in South Africa.
       </p>
     </div>
@@ -56,13 +56,13 @@ function FooterBrand() {
 function FooterNav() {
   return (
     <div>
-      <p className="luxe-eyebrow mb-4 text-white/40">Explore</p>
+      <p className="ref-kicker mb-4 text-neutral-400">Explore</p>
       <ul className="space-y-2.5">
         {brand.nav.map((item) => (
           <li key={item.href}>
             <Link
               href={item.href}
-              className="text-sm text-white/70 transition-colors hover:text-accent"
+              className="text-sm text-neutral-600 transition-colors hover:text-neutral-900"
             >
               {item.label}
             </Link>
@@ -76,8 +76,8 @@ function FooterNav() {
 function FooterContact() {
   return (
     <div>
-      <p className="luxe-eyebrow mb-4 text-white/40">Contact</p>
-      <ul className="space-y-2 text-sm text-white/70">
+      <p className="ref-kicker mb-4 text-neutral-400">Contact</p>
+      <ul className="space-y-2 text-sm text-neutral-600">
         <li>
           <a
             href={`tel:${brand.contact.phone.replace(/\s/g, "")}`}
@@ -99,7 +99,7 @@ function FooterContact() {
 function FooterFollow() {
   return (
     <div>
-      <p className="luxe-eyebrow mb-4 text-white/40">Follow</p>
+      <p className="ref-kicker mb-4 text-neutral-400">Follow</p>
       <FooterSocialLinks />
     </div>
   );
@@ -116,7 +116,7 @@ function FooterSocialLinks() {
             href={s.href}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 border border-white/15 px-4 py-2 text-xs tracking-wide text-white/80 transition hover:border-accent/50 hover:text-accent"
+            className="inline-flex items-center gap-2 border border-neutral-200 px-4 py-2 text-xs tracking-wide text-neutral-600 transition hover:border-neutral-900 hover:text-neutral-900"
           >
             {Icon ? <Icon className="h-4 w-4" /> : null}
             {s.label}
@@ -129,11 +129,11 @@ function FooterSocialLinks() {
 
 function FooterBottom() {
   return (
-    <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
-      <p className="text-[10px] tracking-[0.2em] uppercase text-white/40">
+    <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-neutral-200 pt-8 sm:flex-row">
+      <p className="text-[10px] tracking-[0.2em] uppercase text-neutral-400">
         &copy; {new Date().getFullYear()} {brand.domain}
       </p>
-      <p className="max-w-sm text-center text-xs text-white/50 sm:text-right">{brand.tagline}</p>
+      <p className="max-w-sm text-center text-xs text-neutral-500 sm:text-right">{brand.tagline}</p>
     </div>
   );
 }
