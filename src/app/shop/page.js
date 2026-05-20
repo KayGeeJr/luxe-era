@@ -71,7 +71,7 @@ function ShopContent() {
 
       <div className="mx-auto max-w-shop px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
         {showEditorialSets ? (
-          <section className="mb-16 space-y-8">
+          <section className="mb-16 flex flex-col gap-8 sm:gap-10 lg:gap-12">
             <ShopSetsHeader />
             {allSets.map((set, i) => (
               <RevealOnScroll key={set.slug} delayMs={i * 80}>
@@ -104,7 +104,7 @@ function ShopContent() {
 
         {collection === "sets" && !showEditorialSets ? (
           <section>
-            <div className="grid grid-cols-1 gap-8">
+            <div className="flex flex-col gap-8 sm:gap-10 lg:gap-12">
               {sets.map((p, i) => (
                 <RevealOnScroll key={p.slug} variant="image" delayMs={i * 80}>
                   <ProductCard product={p} layout="editorial" badge="Set" />

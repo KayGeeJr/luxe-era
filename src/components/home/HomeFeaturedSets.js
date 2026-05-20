@@ -27,10 +27,10 @@ export default function HomeFeaturedSets() {
           </div>
         </RevealOnScroll>
 
-        <div className="mt-14 flex flex-col items-stretch gap-10 lg:gap-12">
+        <div className="mt-14 flex flex-col gap-8 sm:gap-10 lg:gap-12">
           {sets.map((set, i) => (
             <RevealOnScroll key={set.slug} variant="image" delayMs={i * 100} className="w-full">
-              <ProductCard product={set} layout="editorial" />
+              <ProductCard product={set} layout="editorial" badge="Set" />
             </RevealOnScroll>
           ))}
         </div>

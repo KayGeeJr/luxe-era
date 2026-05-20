@@ -461,6 +461,20 @@ export function getProductFinishLabel(product) {
   return product.finish.charAt(0).toUpperCase() + product.finish.slice(1);
 }
 
+/** Short copy for homepage / shop editorial set rows */
+export const SET_HOME_BLURBS = {
+  "luxe-era-signature-set":
+    "Obsidian Collection I — Mini Aura tray, Aurelia vase, and Lumi box. Three pieces, one vignette.",
+  "halo-luxe-set":
+    "Obsidian Collection II — Aura tray plus Aurelia, Halo, and Jade vases. Four pieces, one vignette.",
+  "lumi-luxe-set":
+    "Obsidian Collection III — Aura tray, Halo and Jade vases, and the Lumi box. Four pieces, one vignette.",
+};
+
+export function getSetHomeBlurb(product) {
+  return SET_HOME_BLURBS[product?.slug] || product?.description || "";
+}
+
 export function getProductIdealFor(product) {
   if (Array.isArray(product?.idealFor) && product.idealFor.length > 0) {
     return product.idealFor;

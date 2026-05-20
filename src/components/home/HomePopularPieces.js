@@ -15,7 +15,7 @@ export default function HomePopularPieces() {
           <div className="text-center">
             <h2 className="home-section-heading">Individual Pieces</h2>
             <p className="ref-body mx-auto mt-6 max-w-xl">
-              Sculptural trays, vases, and boxes — sold separately or composed into your own set.
+              Sculptural trays, vases, and trinket boxes — sold separately or composed into your own set.
             </p>
             <Link
               href="/shop?collection=pieces"

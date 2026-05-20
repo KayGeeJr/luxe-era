@@ -36,8 +36,7 @@ export default function HomeAbout() {
             </p>
             <p className="ref-body mt-3 text-left">
               Our catalogue includes handmade concrete trinket trays, trinket boxes, mini vases, and
-              curated full sets — from statement Aurelia and Halo vases to the Lumi box and Aura
-              trays. Collection I Signature, Collection II Halo, and Collection III Lumi are each
+              curated full sets. Collection I Signature, Collection II Halo, and Collection III Lumi are each
               available in Obsidian and Ivory finishes.
             </p>
             <p className="mt-4 text-sm tracking-[0.2em] uppercase text-neutral-900">{brand.tagline}</p>

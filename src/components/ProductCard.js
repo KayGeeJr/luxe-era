@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { getSetHomeBlurb } from "../data/mockCatalog";
 import { formatRand } from "../lib/pricing";
 
 export default function ProductCard({ product, badge, layout = "grid" }) {
@@ -19,7 +20,14 @@ export default function ProductCard({ product, badge, layout = "grid" }) {
   const [imgSrc, setImgSrc] = useState(primary);
 
   if (layout === "editorial") {
-    return <EditorialCard product={product} title={title} showBadge={showBadge} primary={primary} />;
+    return (
+      <EditorialCard
+        product={product}
+        title={title}
+        badge={badge || (product.kind === "set" ? "Set" : showBadge)}
+        primary={primary}
+      />
+    );
   }
 
   return (
@@ -88,35 +96,43 @@ function ProductCardInfo({ title, price }) {
   );
 }
 
-function EditorialCard({ product, title, showBadge, primary }) {
+function EditorialCard({ product, title, badge, primary }) {
+  const blurb = product.kind === "set" ? getSetHomeBlurb(product) : product.description;
+
   return (
-    <Link href={`/product/${product.slug}`} className="group block w-full">
-      <div className="relative mx-auto w-full max-w-5xl aspect-[4/3] overflow-hidden bg-[#f0f0f0]">
-        {showBadge ? (
-          <span className="absolute left-4 top-4 z-10 bg-white px-3 py-1 text-[10px] tracking-[0.14em] uppercase">
-            {showBadge}
+    <Link
+      href={`/product/${product.slug}`}
+      className="group grid w-full grid-cols-1 bg-white lg:grid-cols-2 lg:min-h-[min(560px,70vh)]"
+    >
+      <div className="relative aspect-square overflow-hidden bg-[#f0f0f0] lg:aspect-auto lg:min-h-[400px]">
+        {badge ? (
+          <span className="absolute left-4 top-4 z-10 bg-white px-3 py-1.5 text-[10px] font-medium tracking-[0.14em] uppercase text-neutral-900">
+            {badge}
           </span>
         ) : null}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={primary}
           alt={title}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
         />
       </div>
-      <EditorialCardBody product={product} title={title} />
-    </Link>
-  );
-}
 
-function EditorialCardBody({ product, title }) {
-  return (
-    <div className="px-2 py-8 text-center sm:py-10">
-      <h3 className="text-sm font-normal tracking-wide text-neutral-900 sm:text-base">{title}</h3>
-      <p className="mt-2 text-sm text-neutral-600">{formatRand(product.price)}</p>
-      <p className="mx-auto mt-4 max-w-lg text-sm font-light leading-relaxed text-neutral-500 line-clamp-2">
-        {product.description}
-      </p>
-    </div>
+      <div className="flex flex-col justify-center px-8 py-12 sm:px-12 sm:py-16 lg:px-14 lg:py-20">
+        <p className="text-[10px] tracking-[0.28em] uppercase text-neutral-400">
+          {product.kind === "set" ? "Curated set" : "Piece"}
+        </p>
+        <h3 className="mt-4 font-display text-[clamp(2rem,5vw,3.25rem)] font-light leading-[1.1] text-neutral-900">
+          {title}
+        </h3>
+        {blurb ? (
+          <p className="mt-6 max-w-md text-sm font-light leading-relaxed text-neutral-600">{blurb}</p>
+        ) : null}
+        <p className="mt-6 text-base text-neutral-900">{formatRand(product.price)}</p>
+        <span className="mt-8 inline-block text-[11px] tracking-[0.2em] uppercase text-neutral-500 transition-colors group-hover:text-neutral-900">
+          {product.kind === "set" ? "Shop Now" : "View piece"} →
+        </span>
+      </div>
+    </Link>
   );
 }
