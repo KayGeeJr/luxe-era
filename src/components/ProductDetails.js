@@ -282,9 +282,8 @@ function ProductAccordions({ setContents, product }) {
           </summary>
           <ul className="mt-4 space-y-2">
             {setContents.map((item) => (
-              <li key={item.name} className="flex justify-between text-sm text-neutral-600">
-                <span>{item.name}</span>
-                <span>{formatRand(item.price)}</span>
+              <li key={item.name} className="text-sm text-neutral-600">
+                {item.name}
               </li>
             ))}
           </ul>

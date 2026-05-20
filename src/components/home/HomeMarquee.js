@@ -1,10 +1,9 @@
 const items = [
-  "Hand-cast concrete",
   "Signature veining",
   "Limited editions",
   "Made in South Africa",
   "Home Collections",
-  "Sculpted · Scented · Yours",
+  "Handcrafted · Minimal · Timeless",
 ];
 
 export default function HomeMarquee() {
