@@ -18,11 +18,11 @@ export default function HeroText() {
       }`}
     >
       <p className="font-display text-[clamp(3rem,10vw,7.5rem)] font-light leading-[0.92] tracking-[0.06em] text-white lg:text-[clamp(3.5rem,6vw,6.5rem)]">
-        Luxe
+        LUXE
         <span className="mx-2 sm:mx-4 text-white/90" aria-hidden="true">
           ·
         </span>
-        Era
+        ERA
       </p>
       <p className="mt-4 text-[10px] tracking-[0.35em] uppercase text-white/70 sm:text-[11px]">
         Home Collections
